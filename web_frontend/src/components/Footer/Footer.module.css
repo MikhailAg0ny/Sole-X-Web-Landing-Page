@@ -1,0 +1,2 @@
+.footer { border-top:1px solid rgba(255,255,255,.08); }
+.inner { width:min(1200px,100%); margin-inline:auto; padding:24px; color:#aaa; }
