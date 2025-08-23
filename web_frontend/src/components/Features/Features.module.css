@@ -1,5 +1,5 @@
 .features { padding: 56px 0; }
 .grid { width: min(1100px, 100%); margin: 0 auto; padding: 0 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
-.card { border: 1px solid #2a2a2a; border-radius: 12px; padding: 18px; background: #121212; }
+.card { border: 1px solid #2a2a2a; border-radius: 12px; padding: 18px; background: #0a0a0a; }
 .card h3 { margin: 0 0 8px; }
-.card p { margin: 0; color: #b8b8b8; }
+.card p { margin: 0; color: #cfcfcf; }
