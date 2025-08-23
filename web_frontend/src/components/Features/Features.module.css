@@ -10,15 +10,15 @@
   gap: 16px;
 }
 .card {
-  border: 1px solid #2a2a2a;
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 18px;
-  background: #0a0a0a;
+  background: var(--elev);
 }
 .card h3 {
   margin: 0 0 8px;
 }
 .card p {
   margin: 0;
-  color: #cfcfcf;
+  color: var(--muted);
 }

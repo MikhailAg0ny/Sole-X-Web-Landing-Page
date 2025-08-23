@@ -1,0 +1,16 @@
+.about {
+	padding: 40px 0;
+	border-top: 1px solid var(--border);
+	border-bottom: 1px solid var(--border);
+	transition: border-color var(--theme-transition) ease-in-out;
+}
+.inner {
+	width: min(900px, 100%);
+	margin-inline: auto;
+	padding: 0 16px;
+	color: var(--muted);
+	line-height: 1.8;
+	font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+	letter-spacing: 0.01em;
+	transition: color var(--theme-transition) ease-in-out;
+}

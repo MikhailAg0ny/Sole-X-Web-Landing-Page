@@ -1,0 +1,48 @@
+.btn {
+  border: 1px solid var(--border);
+  background: var(--elev);
+  color: var(--color-fg);
+  border-radius: 10px;
+  padding: 6px 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  will-change: transform, background-color, border-color, color, box-shadow;
+  transition: transform 220ms ease,
+    background-color var(--theme-transition) ease-in-out,
+    border-color var(--theme-transition) ease-in-out,
+    color var(--theme-transition) ease-in-out;
+}
+.btn:hover { border-color: #444; transform: translateY(-1px); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn:active { transform: rotate(-4deg) scale(0.985); }
+
+/* Tooltip using data-tip */
+.btn::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  transform: translateX(-50%) translateY(-4px);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  font-size: 12px;
+  line-height: 1;
+  border-radius: 8px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  transition: opacity 160ms ease, transform 200ms ease,
+    background-color var(--theme-transition) ease-in-out,
+    color var(--theme-transition) ease-in-out,
+    border-color var(--theme-transition) ease-in-out;
+}
+.btn:hover::after, .btn:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}

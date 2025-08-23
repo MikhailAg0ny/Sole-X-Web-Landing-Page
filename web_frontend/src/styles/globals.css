@@ -1,8 +1,23 @@
 :root {
   --color-bg: #000;
   --color-fg: #fff;
-  --brand: #fff;
+  --elev: #0a0a0a;
+  --border: #1a1a1a;
   --muted: #cfcfcf;
+  --accent: #ffffff;
+  --theme-transition: 320ms;
+  --x: 50vw;
+  --y: 50vh;
+}
+
+[data-theme='light'] {
+  --color-bg: #ffffff;
+  --color-fg: #111111;
+  --elev: #f6f6f6;
+  --border: #e5e5e5;
+  --muted: #4a4a4a;
+  --accent: #000000;
+  --theme-transition: 320ms;
 }
 *,
 *::before,
@@ -20,11 +35,35 @@ body {
     sans-serif;
   color: var(--color-fg);
   background: var(--color-bg);
+  transition: color var(--theme-transition) ease-in-out,
+    background-color var(--theme-transition) ease-in-out;
+}
+#root { view-transition-name: root; }
+/* Wave sweep reveal using clip-path inset with rounded leading edge */
+@supports (view-transition-name: root) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: var(--theme-transition);
+    animation-timing-function: ease-in-out;
+  }
+  /* Start with the new theme masked to a narrow rounded strip from chosen side */
+  ::view-transition-new(root) {
+    clip-path: inset(0 var(--clip-right, 100%) 0 var(--clip-left, 0%) round var(--r1, 0) var(--r2, 40vmax) var(--r3, 40vmax) var(--r4, 0));
+    animation-name: wave-wipe;
+  }
+  @keyframes wave-wipe {
+    to { clip-path: inset(0 0 0 0 round 0 0 0 0); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body { transition: none; }
 }
 a {
-  color: inherit;
+  color: var(--color-fg);
   text-decoration: none;
 }
+a:hover { color: var(--accent); }
 img {
   max-width: 100%;
   display: block;
