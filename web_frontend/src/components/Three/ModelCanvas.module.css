@@ -1,0 +1,9 @@
+.wrapper {
+  width: 100%;
+  height: clamp(260px, 40vh, 360px);
+  min-height: 240px;
+  background: var(--elev);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
