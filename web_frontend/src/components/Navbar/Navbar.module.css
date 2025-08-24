@@ -1,10 +1,15 @@
 .header {
   position: sticky;
   top: 0;
-  z-index: 10;
-  background: color-mix(in oklab, var(--color-bg) 85%, transparent);
+  z-index: 20;
+  background: color-mix(in oklab, var(--color-bg) 80%, transparent);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
+  transition: background 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+.scrolled {
+  background: color-mix(in oklab, var(--color-bg) 92%, transparent);
+  box-shadow: 0 4px 14px color-mix(in oklab, var(--color-fg) 10%, transparent);
 }
 .inner {
   display: flex;
@@ -20,11 +25,62 @@
   font-weight: 800;
   letter-spacing: 0.5px;
 }
+.nav { display: flex; align-items: center; gap: 22px; }
 .nav a {
   color: var(--muted);
   text-decoration: none;
-  margin-left: 16px;
+  margin-left: 0;
+  padding: 8px 12px;
+  position: relative;
+  border-radius: 999px;
+  transition: color 160ms ease, background 160ms ease, box-shadow 160ms ease, transform 120ms ease;
 }
 .active {
   color: var(--color-fg);
+  background: color-mix(in oklab, var(--color-fg) 10%, transparent);
+  box-shadow: 0 6px 16px color-mix(in oklab, var(--color-fg) 12%, transparent);
+}
+ .nav a:hover { color: var(--color-fg); transform: translateY(-1px); }
+.links {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.link {
+  position: relative;
+  padding: 8px 4px;
+  text-decoration: none;
+  color: inherit;
+  transition: color .2s ease;
+}
+.link::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -4px;
+  height: 2px;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(.4);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.link:hover::after {
+  opacity: .35;
+  transform: scaleX(1);
+}
+/* Remove underline pseudo-element entirely */
+.nav a::after, .nav a:hover::after, .active::after { content: none !important; display: none !important; }
+
+/* Mobile */
+.burger {
+  display: none;
+  width: 38px; height: 28px;
+  padding: 0; border: 0; background: none; cursor: pointer;
+}
+.burger span { display: block; height: 3px; background: var(--color-fg); margin: 5px 0; transition: transform 200ms ease, opacity 200ms ease; }
+
+@media (max-width: 800px) {
+  .burger { display: inline-block; }
+  .nav { position: absolute; left: 0; right: 0; top: 100%; background: var(--color-bg); display: grid; gap: 8px; padding: 12px 24px; border-bottom: 1px solid var(--border); transform-origin: top; transform: scaleY(0); opacity: 0; pointer-events: none; transition: transform 160ms ease, opacity 160ms ease; }
+  .open { transform: scaleY(1); opacity: 1; pointer-events: auto; }
+  .nav a { margin-left: 0; padding: 10px 12px; }
 }
