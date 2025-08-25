@@ -6,7 +6,6 @@ import ThemeToggle from '../ThemeToggle/ThemeToggle'
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [hoveredLink, setHoveredLink] = useState(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4)
@@ -15,13 +14,15 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const handleLinkHover = (linkName) => {
-    setHoveredLink(linkName)
-  }
-
-  const handleLinkLeave = () => {
-    setHoveredLink(null)
-  }
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    const { body } = document
+    if (!body) return
+    const prev = body.style.overflow
+    if (open) body.style.overflow = 'hidden'
+    else body.style.overflow = prev || ''
+    return () => { body.style.overflow = prev || '' }
+  }, [open])
 
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
@@ -37,6 +38,7 @@ export default function Navbar() {
           className={`${styles.burger} ${open ? styles.open : ''}`} 
           aria-label="Menu" 
           aria-expanded={open} 
+          aria-controls="site-nav"
           onClick={() => setOpen(!open)}
         >
           <span />
@@ -44,40 +46,31 @@ export default function Navbar() {
           <span />
         </button>
         
-        <nav className={`${styles.nav} ${open ? styles.open : ''}`}>
+        <nav id="site-nav" className={`${styles.nav} ${open ? styles.open : ''}`} aria-label="Main">
           <div className={styles.navLinks}>
             <NavLink 
               to="/" 
               end 
               className={({ isActive }) => isActive ? styles.active : undefined}
-              onMouseEnter={() => handleLinkHover('home')}
-              onMouseLeave={handleLinkLeave}
               onClick={() => setOpen(false)}
             >
               Home
-              {hoveredLink === 'home' && <div className={styles.linkUnderline} />}
             </NavLink>
             
             <NavLink 
               to="/services" 
               className={({ isActive }) => isActive ? styles.active : undefined}
-              onMouseEnter={() => handleLinkHover('services')}
-              onMouseLeave={handleLinkLeave}
               onClick={() => setOpen(false)}
             >
               Services
-              {hoveredLink === 'services' && <div className={styles.linkUnderline} />}
             </NavLink>
             
             <NavLink 
               to="/contact" 
               className={({ isActive }) => isActive ? styles.active : undefined}
-              onMouseEnter={() => handleLinkHover('contact')}
-              onMouseLeave={handleLinkLeave}
               onClick={() => setOpen(false)}
             >
               Contact Us
-              {hoveredLink === 'contact' && <div className={styles.linkUnderline} />}
             </NavLink>
           </div>
         </nav>

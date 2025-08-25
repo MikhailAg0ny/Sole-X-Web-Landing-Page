@@ -1,9 +1,9 @@
 .wrapper {
-  width: 80%;
+  width: 100%;
   height: auto;
   aspect-ratio: 4 / 3; /* scales with column width for better alignment */
-  min-height: clamp(360px, 44vw, 520px);
-  max-height: min(74dvh, 820px);
+  min-height: clamp(320px, 40vw, 520px);
+  max-height: min(70dvh, 760px);
   background: var(--elev);
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -36,7 +36,7 @@
 
 @media (min-width: 900px) {
   .wrapper {
-    max-width: clamp(560px, 40vw, 660px);
+  max-width: clamp(520px, 42vw, 640px);
     margin-inline: auto; /* keep centered within the right column */
   }
 }

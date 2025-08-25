@@ -74,16 +74,7 @@ export default function Services() {
           ))}
         </div>
 
-        <footer className={styles.footer} data-reveal>
-          <div className={styles.ctaSection}>
-            <h3>Ready to restore your kicks?</h3>
-            <p>Get in touch for a consultation or book your service today</p>
-            <div className={styles.ctaButtons}>
-              <a href="/contact" className={styles.ctaPrimary}>Contact Us</a>
-              <a href="/gallery" className={styles.ctaSecondary}>View Gallery</a>
-            </div>
-          </div>
-        </footer>
+  {/* CTA removed per request */}
       </div>
     </section>
   )
