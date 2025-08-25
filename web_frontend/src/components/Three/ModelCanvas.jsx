@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useMemo, useRef } from 'react'
+import { Suspense, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ContactShadows, Environment, OrbitControls, useGLTF } from '@react-three/drei'
 import { MeshoptDecoder } from 'three-stdlib'
@@ -12,7 +12,8 @@ try { useGLTF.setMeshoptDecoder(MeshoptDecoder) } catch {}
 function ShoeModel({ url, rotation = [0, Math.PI, 0], scale = 1, spin = true, spinSpeed = 0.3 }) {
   const { scene } = useGLTF(url)
   const model = useMemo(() => scene.clone(true), [scene])
-  const groupRef = useRef()
+  const outerRef = useRef() // spins around Y
+  const innerRef = useRef() // holds model and tilt rotation
   const baseScale = useRef(1)
 
   useEffect(() => {
@@ -21,7 +22,7 @@ function ShoeModel({ url, rotation = [0, Math.PI, 0], scale = 1, spin = true, sp
     const size = new THREE.Vector3()
     box.getSize(size)
     const maxDim = Math.max(size.x, size.y, size.z) || 1
-    const target = 2.2 // matches hero area visually
+    const target = 3 // slightly larger to better fill hero area
     baseScale.current = target / maxDim
 
     // Center model on X/Z and place bottom on y=0 for consistent grounding
@@ -31,25 +32,30 @@ function ShoeModel({ url, rotation = [0, Math.PI, 0], scale = 1, spin = true, sp
   }, [model])
 
   useEffect(() => {
-    if (groupRef.current) {
-      groupRef.current.rotation.set(rotation[0], rotation[1], rotation[2])
-    }
+    if (!innerRef.current) return
+    // Apply static tilt to inner group
+    innerRef.current.rotation.set(rotation[0], rotation[1], rotation[2])
+  // After rotation, re-ground Y so minY sits at y=0 (keep X/Z center unchanged)
+  const box = new THREE.Box3().setFromObject(innerRef.current)
+  innerRef.current.position.y -= box.min.y
   }, [rotation])
 
   useFrame((_, delta) => {
-    if (spin && groupRef.current) {
-      groupRef.current.rotation.y += delta * spinSpeed
+    if (spin && outerRef.current) {
+      outerRef.current.rotation.y += delta * spinSpeed
     }
   })
 
   return (
-    <group ref={groupRef} scale={scale * baseScale.current}>
-      <primitive object={model} dispose={null} />
+    <group ref={outerRef} scale={scale * baseScale.current}>
+      <group ref={innerRef}>
+        <primitive object={model} dispose={null} />
+      </group>
     </group>
   )
 }
 
-export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_36.optim.glb', rearView = true, scale = 1.5, spin = true, spinSpeed = 0.3 }) {
+export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_36.optim.glb', rearView = true, rotation, offset = [0,0,0], scale = 5, spin = true, spinSpeed = 0.3 }) {
   // Preload the model for faster mount
   useEffect(() => { try { useGLTF.preload(modelUrl) } catch {} }, [modelUrl])
 
@@ -59,12 +65,42 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
         <Suspense fallback={<Loader />}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[3, 6, 5]} intensity={1} castShadow shadow-mapSize-width={1024} shadow-mapSize-height={1024} />
-          <ShoeModel url={modelUrl} rotation={rearView ? [0, Math.PI, 0] : [0, 0, 0]} scale={scale} spin={spin} spinSpeed={spinSpeed} />
+          <group position={offset}>
+            <ShoeModel url={modelUrl} rotation={rotation ?? (rearView ? [0, Math.PI, 0] : [0, 0, 0])} scale={scale} spin={spin} spinSpeed={spinSpeed} />
+          </group>
           <ContactShadows position={[0, -0.001, 0]} opacity={0.35} blur={2.8} scale={10} far={8} />
           <Environment preset="city" />
           <OrbitControls enableZoom={false} enablePan={false} minPolarAngle={Math.PI / 2.5} maxPolarAngle={Math.PI / 2} />
         </Suspense>
       </Canvas>
     </div>
+  )
+}
+
+function Model({ url, scale, rotation, offset }) {
+  const { nodes } = useGLTF(url)
+  const groupRef = useRef()
+  const innerRef = useRef()
+
+  useLayoutEffect(() => {
+    if (!innerRef.current) return
+    // Center the model on all axes to prevent it from floating too high or low.
+    const box = new THREE.Box3().setFromObject(innerRef.current)
+    const center = new THREE.Vector3()
+    box.getCenter(center)
+    innerRef.current.position.sub(center)
+  }, [nodes])
+
+  useFrame((state) => {
+    if (groupRef.current) {
+      // Rotate the group for a simple spin animation
+      groupRef.current.rotation.y += 0.01
+    }
+  })
+
+  return (
+    <group ref={groupRef} position={offset} rotation={rotation} scale={scale}>
+      <mesh ref={innerRef} geometry={nodes.Cube.geometry} material={nodes.Cube.material} />
+    </group>
   )
 }

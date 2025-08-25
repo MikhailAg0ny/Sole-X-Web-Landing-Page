@@ -1,4 +1,4 @@
-import { NavLink, Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import styles from './Navbar.module.css'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
@@ -26,31 +26,13 @@ export default function Navbar() {
           <span />
           <span />
         </button>
-        <nav className={styles.nav}>
-          <ul className={styles.links}>
-            <li>
-              <NavLink to="/" end className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}>
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/services" className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}>
-                Services
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/gallery" className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}>
-                Gallery
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/contact" className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}>
-                Contact Us
-              </NavLink>
-            </li>
-          </ul>
+  <nav className={`${styles.nav} ${open ? styles.open : ''}`} onClick={() => setOpen(false)}>
+          <NavLink to="/" end className={({ isActive }) => isActive ? styles.active : undefined}>Home</NavLink>
+          <NavLink to="/services" className={({ isActive }) => isActive ? styles.active : undefined}>Services</NavLink>
+          <NavLink to="/gallery" className={({ isActive }) => isActive ? styles.active : undefined}>Gallery</NavLink>
+          <NavLink to="/contact" className={({ isActive }) => isActive ? styles.active : undefined}>Contact Us</NavLink>
         </nav>
-        <ThemeToggle />
+  <ThemeToggle />
       </div>
     </header>
   )

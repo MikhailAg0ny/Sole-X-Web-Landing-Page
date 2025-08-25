@@ -1,4 +1,5 @@
 import styles from './Features.module.css'
+import { Link } from 'react-router-dom'
 
 const items = [
   { title: 'Deep Clean', desc: 'Professional cleaning for all materials.' },
@@ -11,10 +12,11 @@ export default function Features() {
     <section id="services" className={styles.features}>
       <div className={styles.grid}>
         {items.map((f) => (
-          <article className={styles.card} key={f.title}>
+          <Link to="/services" key={f.title} className={styles.card}>
             <h3>{f.title}</h3>
             <p>{f.desc}</p>
-          </article>
+            <span className={styles.more}>Learn more →</span>
+          </Link>
         ))}
       </div>
     </section>

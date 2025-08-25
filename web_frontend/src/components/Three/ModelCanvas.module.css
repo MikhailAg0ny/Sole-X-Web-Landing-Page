@@ -1,6 +1,6 @@
 .wrapper {
   width: 100%;
-  height: clamp(280px, 62vw, 560px);
+  height: clamp(300px, 64vw, 600px);
   min-height: 240px;
   background: var(--elev);
   border: 1px solid var(--border);

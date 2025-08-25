@@ -14,3 +14,67 @@
 	letter-spacing: 0.01em;
 	transition: color var(--theme-transition) ease-in-out;
 }
+/* Two-column responsive layout */
+.layout {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 16px;
+}
+.content { order: 1; }
+.media { order: 2; }
+.img {
+	width: 100%;
+	height: auto;
+	display: block;
+	border-radius: 12px;
+	border: 1px solid var(--border);
+	background: var(--elev);
+	box-shadow: 0 6px 24px color-mix(in oklab, var(--color-fg) 5%, transparent);
+}
+/* New structured typography for professional copy */
+.heading {
+	margin: 0 0 10px;
+	font-size: clamp(1.3rem, 1.1rem + 1.2vw, 1.9rem);
+	font-weight: 800;
+	color: var(--color-fg);
+}
+.lead {
+	color: var(--color-fg);
+	margin: 0 0 10px;
+}
+.points {
+	margin: 12px 0 10px 0;
+	padding: 0;
+	list-style: none;
+}
+.points li {
+	margin: 6px 0;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 8px;
+	color: var(--color-fg);
+	background: color-mix(in oklab, var(--color-fg) 6%, transparent);
+	border: 1px solid var(--border);
+}
+.note {
+	margin-top: 4px;
+	color: color-mix(in oklab, var(--color-fg) 80%, transparent);
+}
+
+@media (min-width: 900px) {
+	.layout {
+		grid-template-columns: 1.2fr 0.8fr;
+		gap: 24px;
+		align-items: center;
+	}
+	.content { order: 1; }
+	.media { order: 2; }
+}

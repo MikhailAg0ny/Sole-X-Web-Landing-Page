@@ -10,24 +10,39 @@
   gap: 20px;
   align-items: center;
 }
-.colText { text-align: center; }
-.colModel { min-height: 300px; }
+.colText {
+  text-align: center;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+.colModel {
+  min-height: 340px;
+}
 .title {
   font-size: clamp(2.8rem, 7.5vw + 1rem, 5.5rem);
-  margin: 0 0 12px;
+  margin: 0;
   font-weight: 900;
   letter-spacing: 0.3px;
   line-height: 1.05;
 }
 .subtitle {
   color: var(--muted);
-  margin: 0 0 24px;
+  margin: 12px 0 20px;
   font-size: clamp(1rem, 1.2vw + 0.6rem, 1.25rem);
+}
+.separator {
+  width: 120px;
+  height: 2px;
+  background: color-mix(in oklab, var(--color-fg) 20%, transparent);
+  margin: 0 auto 22px;
+  border-radius: 2px;
 }
 .actions {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 .ctaPrimary {
   background: var(--color-fg);
@@ -44,7 +59,17 @@
 }
 
 @media (min-width: 900px) {
-  .grid { grid-template-columns: 1fr 1fr; gap: 28px; }
-  .colText { text-align: left; }
-  .actions { justify-content: flex-start; }
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .colText {
+    text-align: left;
+    gap: 12px;
+  }
+  .subtitle { margin: 14px 0 18px; }
+  .separator { margin: 0 0 26px; }
+  .actions {
+    justify-content: flex-start;
+  }
 }
