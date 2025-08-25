@@ -29,7 +29,6 @@ export default function Navbar() {
   <nav className={`${styles.nav} ${open ? styles.open : ''}`} onClick={() => setOpen(false)}>
           <NavLink to="/" end className={({ isActive }) => isActive ? styles.active : undefined}>Home</NavLink>
           <NavLink to="/services" className={({ isActive }) => isActive ? styles.active : undefined}>Services</NavLink>
-          <NavLink to="/gallery" className={({ isActive }) => isActive ? styles.active : undefined}>Gallery</NavLink>
           <NavLink to="/contact" className={({ isActive }) => isActive ? styles.active : undefined}>Contact Us</NavLink>
         </nav>
   <ThemeToggle />

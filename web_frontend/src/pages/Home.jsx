@@ -1,6 +1,5 @@
 import Hero from '../components/Hero/Hero'
-import About from '../components/About/About'
-import Features from '../components/Features/Features'
+import AboutFeatures from '../components/AboutFeatures/AboutFeatures'
 import { useEffect } from 'react'
 
 export default function Home() {
@@ -17,8 +16,7 @@ export default function Home() {
   return (
     <>
       <div data-reveal><Hero /></div>
-      <div data-reveal><About /></div>
-      <div data-reveal><Features /></div>
+  <div data-reveal><AboutFeatures /></div>
     </>
   )
 }

@@ -1,5 +1,6 @@
 .features {
   padding: 56px 0;
+  border-top: 1px solid var(--border);
 }
 .grid {
   width: min(1100px, 100%);
