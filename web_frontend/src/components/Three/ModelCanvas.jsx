@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { ContactShadows, Environment, OrbitControls, useGLTF } from '@react-three/drei'
 import { MeshoptDecoder } from 'three-stdlib'
@@ -15,6 +15,7 @@ function ShoeModel({ url, rotation = [0, Math.PI, 0], scale = 1, spin = true, sp
   const outerRef = useRef() // spins around Y
   const innerRef = useRef() // holds model and tilt rotation
   const baseScale = useRef(1)
+  const [isPositioned, setIsPositioned] = useState(false)
 
   useEffect(() => {
     // Normalize model size to a consistent visual scale
@@ -29,15 +30,17 @@ function ShoeModel({ url, rotation = [0, Math.PI, 0], scale = 1, spin = true, sp
     const center = new THREE.Vector3()
     box.getCenter(center)
     model.position.set(-center.x, -box.min.y, -center.z)
+    setIsPositioned(true)
   }, [model])
 
   useEffect(() => {
     if (!innerRef.current) return
     // Apply static tilt to inner group
     innerRef.current.rotation.set(rotation[0], rotation[1], rotation[2])
-  // After rotation, re-ground Y so minY sits at y=0 (keep X/Z center unchanged)
-  const box = new THREE.Box3().setFromObject(innerRef.current)
-  innerRef.current.position.y -= box.min.y
+    // After rotation, re-ground Y so minY sits at y=0 (keep X/Z center unchanged)
+    const box = new THREE.Box3().setFromObject(innerRef.current)
+    innerRef.current.position.y -= box.min.y
+    setIsPositioned(true)
   }, [rotation])
 
   useFrame((_, delta) => {
@@ -59,9 +62,42 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
   // Preload the model for faster mount
   useEffect(() => { try { useGLTF.preload(modelUrl) } catch {} }, [modelUrl])
 
+  // Handle resize and visibility changes to maintain positioning
+  useEffect(() => {
+    const handleResize = () => {
+      // Force a re-render of the canvas to fix positioning issues
+      window.dispatchEvent(new Event('resize'))
+    }
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        // Small delay to ensure DOM is ready after alt-tab
+        setTimeout(handleResize, 100)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [])
+
   return (
     <div className={styles.wrapper}>
-      <Canvas shadows gl={{ antialias: true, alpha: true }} dpr={[1, 2]}>
+      <Canvas 
+        shadows 
+        gl={{ antialias: true, alpha: true }} 
+        dpr={[1, 2]}
+        camera={{ position: [0, 2, 5], fov: 45 }}
+        onCreated={({ gl, camera }) => {
+          // Ensure proper camera setup
+          gl.setClearColor(0x000000, 0)
+          camera.position.set(0, 2, 5)
+        }}
+      >
         <Suspense fallback={<Loader />}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[3, 6, 5]} intensity={1} castShadow shadow-mapSize-width={1024} shadow-mapSize-height={1024} />
@@ -76,6 +112,9 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
             minPolarAngle={Math.PI / 2.5}
             maxPolarAngle={Math.PI / 2}
             target={[0, targetY, 0]}
+            enableDamping={true}
+            dampingFactor={0.05}
+            rotateSpeed={0.5}
           />
         </Suspense>
       </Canvas>

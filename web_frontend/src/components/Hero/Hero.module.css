@@ -9,11 +9,15 @@
 }
 /* Prefer dynamic viewport to better match browser chrome/zoom behavior */
 @supports (height: 100dvh) {
-  .hero { min-height: 100dvh; }
+  .hero {
+    min-height: 100dvh;
+  }
 }
 /* Fallback for mobile URL bars if dvh is not supported */
 @supports (height: 100svh) {
-  .hero { min-height: 100svh; }
+  .hero {
+    min-height: 100svh;
+  }
 }
 .grid {
   width: min(1360px, 100%);
@@ -33,10 +37,18 @@
   margin-inline: auto;
 }
 .colModel {
-  min-height: clamp(500px, 55dvh, 780px); /* larger visual footprint for the model */
+  min-height: clamp(
+    500px,
+    55dvh,
+    780px
+  ); /* larger visual footprint for the model */
 }
 .title {
-  font-size: clamp(4rem, 9.5vw + 1rem, 7.6rem); /* bigger for full-screen presence */
+  font-size: clamp(
+    4rem,
+    9.5vw + 1rem,
+    7.6rem
+  ); /* bigger for full-screen presence */
   margin: 0;
   font-weight: 900;
   letter-spacing: 0.3px;
@@ -84,23 +96,33 @@
   box-shadow: var(--ring);
   transition: box-shadow 180ms ease, transform 160ms ease;
 }
-.ctaPrimary:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
-.ctaSecondary:hover { box-shadow: var(--shadow-1); transform: translateY(-1px); }
+.ctaPrimary:hover {
+  box-shadow: var(--shadow-2);
+  transform: translateY(-1px);
+}
+.ctaSecondary:hover {
+  box-shadow: var(--shadow-1);
+  transform: translateY(-1px);
+}
 
 @media (min-width: 900px) {
   .grid {
-  grid-template-columns: 1fr 4fr; /* ~20% text / 80% model */
-  gap: 48px;
+    grid-template-columns: 1fr 4fr; /* ~20% text / 80% model */
+    gap: 48px;
   }
   .colText {
-  text-align: left;
-  gap: 20px;
-  max-width: 700px; /* comfortable for larger type */
-  justify-self: start; /* align with left edge */
-  align-items: start;
+    text-align: left;
+    gap: 20px;
+    max-width: 700px; /* comfortable for larger type */
+    justify-self: start; /* align with left edge */
+    align-items: start;
   }
-  .colModel { align-self: center; }
-  .subtitle { margin: 12px 0 22px; }
+  .colModel {
+    align-self: center;
+  }
+  .subtitle {
+    margin: 12px 0 22px;
+  }
   .actions {
     justify-content: flex-start; /* align CTAs with left edge on desktop */
   }
@@ -108,5 +130,7 @@
 
 /* On taller screens, softly center the columns vertically for better composition */
 @media (min-height: 800px) and (min-width: 900px) {
-  .grid { align-items: center; }
+  .grid {
+    align-items: center;
+  }
 }

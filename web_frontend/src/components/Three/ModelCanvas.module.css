@@ -11,6 +11,10 @@
   position: relative;
   isolation: isolate; /* prevents stacking overlap */
   box-shadow: var(--shadow-1);
+  /* Ensure stable positioning */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 /* Ensure the R3F <canvas> fills its container */
@@ -20,11 +24,28 @@
   width: 100%;
   height: 100%;
   display: block;
+  /* Prevent canvas from floating or shifting */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Force hardware acceleration and prevent positioning issues */
+.wrapper > canvas:focus {
+  outline: none;
 }
 
 @media (min-width: 900px) {
   .wrapper {
     max-width: clamp(560px, 40vw, 660px);
     margin-inline: auto; /* keep centered within the right column */
+  }
+}
+
+/* Ensure stable positioning during theme transitions */
+@media (prefers-reduced-motion: no-preference) {
+  .wrapper {
+    transition: border-color var(--theme-transition) ease-in-out,
+                background-color var(--theme-transition) ease-in-out,
+                box-shadow var(--theme-transition) ease-in-out;
   }
 }

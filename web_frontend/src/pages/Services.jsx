@@ -5,8 +5,7 @@ const items = [
   {
     key: 'general',
     title: 'General Cleaning',
-    desc:
-      'Keep your daily-wear sneakers looking fresh. Our General Cleaning service removes surface dirt and grime to maintain their look.',
+    desc: 'Keep your daily-wear sneakers looking fresh. Our General Cleaning service removes surface dirt and grime to maintain their look.',
     prices: ['₱149', '₱215 (all-white)'],
     note: 'Inner portions not included — add ₱80 for a complete clean.',
     imgAlt: 'General Cleaning before and after',
@@ -15,8 +14,7 @@ const items = [
   {
     key: 'whitening',
     title: 'Sole Whitening',
-    desc:
-      'Tired of yellowing soles making your sneakers look old? Our specialized Sole Whitening treatment restores their bright, clean look. We carefully apply our solution to all visible parts of the soles, giving your shoes a new lease on life.',
+    desc: 'Tired of yellowing soles making your sneakers look old? Our specialized Sole Whitening treatment restores their bright, clean look. We carefully apply our solution to all visible parts of the soles, giving your shoes a new lease on life.',
     prices: ['₱120'],
     imgAlt: 'Sole Whitening before and after',
     imgSrc: '/solex-logo.png',
@@ -24,8 +22,7 @@ const items = [
   {
     key: 'deep',
     title: 'Deep Cleaning',
-    desc:
-      'For shoes that need serious attention, our Deep Cleaning service goes beyond the surface. We meticulously clean all portions of the sneaker — inside and out — to banish stubborn dirt, grime, and odors. This is the ultimate refresh for your favorite pair.',
+    desc: 'For shoes that need serious attention, our Deep Cleaning service goes beyond the surface. We meticulously clean all portions of the sneaker — inside and out — to banish stubborn dirt, grime, and odors. This is the ultimate refresh for your favorite pair.',
     prices: ['₱299'],
     imgAlt: 'Deep Cleaning before and after',
     imgSrc: '/solex-logo.png',
@@ -43,11 +40,18 @@ export default function Services() {
     els.forEach((el) => io.observe(el))
     return () => io.disconnect()
   }, [])
+
   return (
     <section className={styles.services}>
       <div className={styles.container}>
-        <h1 className={styles.title} data-reveal>Our Services</h1>
-        <p className={styles.kicker} data-reveal>SNEAKER CARE PRICES</p>
+        <header className={styles.header} data-reveal>
+          <h1 className={styles.title}>Our Services</h1>
+          <p className={styles.kicker}>PROFESSIONAL SNEAKER CARE</p>
+          <p className={styles.subtitle}>
+            From quick refreshes to complete restorations, we bring your kicks back to life
+          </p>
+        </header>
+
         <div className={styles.list}>
           {items.map((s, i) => (
             <article key={s.key} className={styles.item} data-reveal style={{ transitionDelay: `${i * 60}ms` }}>
@@ -69,6 +73,17 @@ export default function Services() {
             </article>
           ))}
         </div>
+
+        <footer className={styles.footer} data-reveal>
+          <div className={styles.ctaSection}>
+            <h3>Ready to restore your kicks?</h3>
+            <p>Get in touch for a consultation or book your service today</p>
+            <div className={styles.ctaButtons}>
+              <a href="/contact" className={styles.ctaPrimary}>Contact Us</a>
+              <a href="/gallery" className={styles.ctaSecondary}>View Gallery</a>
+            </div>
+          </div>
+        </footer>
       </div>
     </section>
   )

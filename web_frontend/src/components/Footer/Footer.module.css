@@ -1,2 +1,19 @@
-.footer { border-top:1px solid var(--border); }
-.inner { width:min(1200px,100%); margin-inline:auto; padding:24px; color:var(--muted); }
+.footer {
+  border-top: 1px solid var(--border);
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-bg);
+  transform: translateY(100%);
+  transition: transform 260ms ease;
+  will-change: transform;
+  z-index: 50;
+}
+.peek { transform: translateY(0); }
+.inner {
+  width: min(1200px, 100%);
+  margin-inline: auto;
+  padding: 24px;
+  color: var(--muted);
+}

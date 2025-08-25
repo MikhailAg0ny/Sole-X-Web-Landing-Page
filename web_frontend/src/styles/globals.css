@@ -1,31 +1,36 @@
 :root {
   --header-h: clamp(56px, 48px + 1vw, 72px);
-  --color-bg: #000;
-  --color-fg: #fff;
-  --elev: #0a0a0a;
-  --border: #1a1a1a;
-  --muted: #cfcfcf;
+  /* Dark theme defaults */
+  --color-bg: #0b0b0c;
+  --color-fg: #f6f7fb;
+  --elev: #101114;
+  --border: #1a1c20;
+  --muted: #c9cbd4;
+  /* Black and white accent palette */
   --accent: #ffffff;
+  --accent-strong: #e5e5e5;
+  --accent-weak: color-mix(in oklab, var(--accent) 16%, transparent);
   --theme-transition: 320ms;
   --x: 50vw;
   --y: 50vh;
-  /* Theme-aware shadow tokens: use var(--color-fg) to ensure visibility in both themes */
+  /* Theme-aware shadow tokens */
   --shadow-ambient: 0 2px 8px color-mix(in oklab, var(--color-fg) 6%, transparent);
   --shadow-1: 0 6px 16px color-mix(in oklab, var(--color-fg) 8%, transparent);
   --shadow-2: 0 10px 28px color-mix(in oklab, var(--color-fg) 12%, transparent);
-  --glow-1: 0 0 0 2px color-mix(in oklab, var(--color-fg) 14%, transparent) inset;
+  --glow-1: 0 0 0 2px color-mix(in oklab, var(--accent) 40%, transparent) inset;
   --ring: 0 0 0 1px var(--border);
 }
 
 [data-theme="light"] {
-  --color-bg: #ffffff;
-  --color-fg: #111111;
-  --elev: #f6f6f6;
-  --border: #e5e5e5;
-  --muted: #4a4a4a;
+  --color-bg: #f9fafb;
+  --color-fg: #0b1220;
+  --elev: #ffffff;
+  --border: #e6e8ee;
+  --muted: #3f4756;
   --accent: #000000;
+  --accent-strong: #1a1a1a;
+  --accent-weak: color-mix(in oklab, var(--accent) 18%, transparent);
   --theme-transition: 320ms;
-  /* The same shadow vars work cross-theme because they derive from --color-fg */
 }
 *,
 *::before,
@@ -81,7 +86,7 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: var(--accent);
+  color: var(--accent-strong);
 }
 img {
   max-width: 100%;
