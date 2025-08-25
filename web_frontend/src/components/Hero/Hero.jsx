@@ -9,19 +9,21 @@ export default function Hero() {
       <div className={styles.grid}>
         <div className={styles.colText}>
           <h1 className={styles.title}><SoleXLogo /></h1>
+          <h2 className={styles.headline}>Bring Your Kicks Back to Life.</h2>
           <p className={styles.subtitle}>Professional Sneaker Cleaning & Restoration</p>
-          <div className={styles.separator} aria-hidden="true" />
           <div className={styles.actions}>
-            <Link className={styles.ctaPrimary} to="/contact">Book a Service</Link>
+            <Link className={styles.ctaPrimary} to="/contact">Contact Us Now</Link>
             <Link className={styles.ctaSecondary} to="/services">View Services</Link>
           </div>
         </div>
         <div className={styles.colModel}>
           <ModelCanvas
             modelUrl="/models/nike_air_zoom_pegasus_36.optim.glb"
-            rotation={[0, Math.PI * 0.5, 0]}
+            rotation={[0, Math.PI * 5, 0]}
             rearView={true}
-            scale={2}
+            scale={3}
+            offset={[0.05, -0.35, -0.48]}
+            targetY={0.6}
           />
         </div>
       </div>

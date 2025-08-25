@@ -29,7 +29,7 @@
 	border-radius: 12px;
 	border: 1px solid var(--border);
 	background: var(--elev);
-	box-shadow: 0 6px 24px color-mix(in oklab, var(--color-fg) 5%, transparent);
+	box-shadow: var(--shadow-1);
 }
 /* New structured typography for professional copy */
 .heading {

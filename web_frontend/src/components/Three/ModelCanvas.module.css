@@ -1,13 +1,16 @@
 .wrapper {
-  width: 100%;
-  height: clamp(300px, 64vw, 600px);
-  min-height: 240px;
+  width: 80%;
+  height: auto;
+  aspect-ratio: 4 / 3; /* scales with column width for better alignment */
+  min-height: clamp(360px, 44vw, 520px);
+  max-height: min(74dvh, 820px);
   background: var(--elev);
   border: 1px solid var(--border);
   border-radius: 16px;
   overflow: hidden;
   position: relative;
   isolation: isolate; /* prevents stacking overlap */
+  box-shadow: var(--shadow-1);
 }
 
 /* Ensure the R3F <canvas> fills its container */
@@ -17,4 +20,11 @@
   width: 100%;
   height: 100%;
   display: block;
+}
+
+@media (min-width: 900px) {
+  .wrapper {
+    max-width: clamp(560px, 40vw, 660px);
+    margin-inline: auto; /* keep centered within the right column */
+  }
 }

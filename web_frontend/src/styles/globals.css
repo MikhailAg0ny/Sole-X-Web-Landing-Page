@@ -8,6 +8,12 @@
   --theme-transition: 320ms;
   --x: 50vw;
   --y: 50vh;
+  /* Theme-aware shadow tokens: use var(--color-fg) to ensure visibility in both themes */
+  --shadow-ambient: 0 2px 8px color-mix(in oklab, var(--color-fg) 6%, transparent);
+  --shadow-1: 0 6px 16px color-mix(in oklab, var(--color-fg) 8%, transparent);
+  --shadow-2: 0 10px 28px color-mix(in oklab, var(--color-fg) 12%, transparent);
+  --glow-1: 0 0 0 2px color-mix(in oklab, var(--color-fg) 14%, transparent) inset;
+  --ring: 0 0 0 1px var(--border);
 }
 
 [data-theme="light"] {
@@ -18,6 +24,7 @@
   --muted: #4a4a4a;
   --accent: #000000;
   --theme-transition: 320ms;
+  /* The same shadow vars work cross-theme because they derive from --color-fg */
 }
 *,
 *::before,

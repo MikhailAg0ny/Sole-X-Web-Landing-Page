@@ -55,7 +55,7 @@ function ShoeModel({ url, rotation = [0, Math.PI, 0], scale = 1, spin = true, sp
   )
 }
 
-export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_36.optim.glb', rearView = true, rotation, offset = [0,0,0], scale = 5, spin = true, spinSpeed = 0.3 }) {
+export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_36.optim.glb', rearView = true, rotation, offset = [0,0,0], scale = 1, spin = true, spinSpeed = 0.3, targetY = 0.75 }) {
   // Preload the model for faster mount
   useEffect(() => { try { useGLTF.preload(modelUrl) } catch {} }, [modelUrl])
 
@@ -68,9 +68,15 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
           <group position={offset}>
             <ShoeModel url={modelUrl} rotation={rotation ?? (rearView ? [0, Math.PI, 0] : [0, 0, 0])} scale={scale} spin={spin} spinSpeed={spinSpeed} />
           </group>
-          <ContactShadows position={[0, -0.001, 0]} opacity={0.35} blur={2.8} scale={10} far={8} />
+          <ContactShadows position={[0, (offset?.[1] || 0) - 0.001, 0]} opacity={0.35} blur={2.8} scale={10} far={8} />
           <Environment preset="city" />
-          <OrbitControls enableZoom={false} enablePan={false} minPolarAngle={Math.PI / 2.5} maxPolarAngle={Math.PI / 2} />
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+            minPolarAngle={Math.PI / 2.5}
+            maxPolarAngle={Math.PI / 2}
+            target={[0, targetY, 0]}
+          />
         </Suspense>
       </Canvas>
     </div>
