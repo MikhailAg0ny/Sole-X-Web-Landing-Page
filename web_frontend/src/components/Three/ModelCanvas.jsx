@@ -16,7 +16,7 @@ function ShoeModel({ url, rotation = [0, Math.PI, 0], scale = 1, spin = true, sp
   const innerRef = useRef() // holds model and tilt rotation
   const baseScale = useRef(1)
   const [isPositioned, setIsPositioned] = useState(false)
-
+  
   useEffect(() => {
     // Normalize model size to a consistent visual scale
     const box = new THREE.Box3().setFromObject(model)
@@ -37,9 +37,9 @@ function ShoeModel({ url, rotation = [0, Math.PI, 0], scale = 1, spin = true, sp
     if (!innerRef.current) return
     // Apply static tilt to inner group
     innerRef.current.rotation.set(rotation[0], rotation[1], rotation[2])
-    // After rotation, re-ground Y so minY sits at y=0 (keep X/Z center unchanged)
-    const box = new THREE.Box3().setFromObject(innerRef.current)
-    innerRef.current.position.y -= box.min.y
+  // After rotation, re-ground Y so minY sits at y=0 (keep X/Z center unchanged)
+  const box = new THREE.Box3().setFromObject(innerRef.current)
+  innerRef.current.position.y -= box.min.y
     setIsPositioned(true)
   }, [rotation])
 
@@ -48,6 +48,7 @@ function ShoeModel({ url, rotation = [0, Math.PI, 0], scale = 1, spin = true, sp
       outerRef.current.rotation.y += delta * spinSpeed
     }
   })
+  
 
   return (
     <group ref={outerRef} scale={scale * baseScale.current}>
@@ -87,7 +88,7 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
 
   return (
     <div className={styles.wrapper}>
-      <Canvas 
+  <Canvas 
         shadows 
         gl={{ antialias: true, alpha: true }} 
         dpr={[1, 2]}
@@ -101,6 +102,15 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
         <Suspense fallback={<Loader />}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[3, 6, 5]} intensity={1} castShadow shadow-mapSize-width={1024} shadow-mapSize-height={1024} />
+          <spotLight
+            position={[-3, 7, 4]}
+            angle={0.6}
+            penumbra={0.5}
+            intensity={0.8}
+            castShadow
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+          />
           <group position={offset}>
             <ShoeModel url={modelUrl} rotation={rotation ?? (rearView ? [0, Math.PI, 0] : [0, 0, 0])} scale={scale} spin={spin} spinSpeed={spinSpeed} />
           </group>

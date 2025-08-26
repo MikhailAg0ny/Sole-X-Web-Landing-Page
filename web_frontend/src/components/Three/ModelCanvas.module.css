@@ -17,6 +17,19 @@
   perspective: 1000px;
 }
 
+/* Soft hue background layer behind the canvas (subtle) */
+.wrapper::before {
+  content: "";
+  position: absolute;
+  inset: -1px; /* bleed under the border */
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 90% at 20% 10%, color-mix(in oklab, var(--accent) 12%, transparent), transparent 65%),
+    radial-gradient(120% 90% at 80% 90%, color-mix(in oklab, var(--accent) 16%, transparent), transparent 65%),
+    linear-gradient(180deg, color-mix(in oklab, var(--color-bg) 90%, transparent), color-mix(in oklab, var(--color-bg) 96%, transparent));
+  z-index: 0;
+}
+
 /* Ensure the R3F <canvas> fills its container */
 .wrapper > canvas {
   position: absolute;
@@ -27,6 +40,7 @@
   /* Prevent canvas from floating or shifting */
   transform: translateZ(0);
   backface-visibility: hidden;
+  z-index: 1; /* above hue background */
 }
 
 /* Force hardware acceleration and prevent positioning issues */
