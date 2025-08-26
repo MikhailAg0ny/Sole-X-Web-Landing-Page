@@ -43,6 +43,15 @@ function ShoeModel({ url, rotation = [0, Math.PI, 0], scale = 1, spin = true, sp
     setIsPositioned(true)
   }, [rotation])
 
+  // One-shot re-ground after first frame to avoid any late material/decoder updates shifting bounds
+  useFrame(() => {
+    if (!innerRef.current || !isPositioned) return
+    const box = new THREE.Box3().setFromObject(innerRef.current)
+    if (Math.abs(box.min.y) > 1e-3) {
+      innerRef.current.position.y -= box.min.y
+    }
+  })
+
   useFrame((_, delta) => {
     if (spin && outerRef.current) {
       outerRef.current.rotation.y += delta * spinSpeed
@@ -86,17 +95,22 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
     }
   }, [])
 
+  const mqSmall = typeof window !== 'undefined' ? window.matchMedia('(max-width: 600px)').matches : false
+  const mqShort = typeof window !== 'undefined' ? window.matchMedia('(max-height: 620px)').matches : false
+  const fov = mqSmall ? (mqShort ? 60 : 55) : 45
+  const dpr = mqSmall ? [1, mqShort ? 1.25 : 1.5] : [1, 2]
+
   return (
     <div className={styles.wrapper}>
   <Canvas 
         shadows 
         gl={{ antialias: true, alpha: true }} 
-        dpr={[1, 2]}
-        camera={{ position: [0, 2, 5], fov: 45 }}
+        dpr={dpr}
+        camera={{ position: mqShort ? [0, 2.2, 5.6] : [0, 2, 5], fov }}
         onCreated={({ gl, camera }) => {
           // Ensure proper camera setup
           gl.setClearColor(0x000000, 0)
-          camera.position.set(0, 2, 5)
+          camera.position.set(mqShort ? 0 : 0, mqShort ? 2.2 : 2, mqShort ? 5.6 : 5)
         }}
       >
         <Suspense fallback={<Loader />}>
@@ -121,7 +135,7 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
             enablePan={false}
             minPolarAngle={Math.PI / 2.5}
             maxPolarAngle={Math.PI / 2}
-            target={[0, targetY, 0]}
+            target={[0, Math.max(0.4, Math.min(0.8, targetY)), 0]}
             enableDamping={true}
             dampingFactor={0.05}
             rotateSpeed={0.5}

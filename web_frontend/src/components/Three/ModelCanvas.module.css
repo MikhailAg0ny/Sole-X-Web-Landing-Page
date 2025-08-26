@@ -2,8 +2,8 @@
   width: 100%;
   height: auto;
   aspect-ratio: 4 / 3; /* scales with column width for better alignment */
-  min-height: clamp(320px, 40vw, 520px);
-  max-height: min(70dvh, 760px);
+  min-height: clamp(260px, 40vw, 520px);
+  max-height: min(64dvh, 720px);
   background: var(--elev);
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -23,10 +23,21 @@
   position: absolute;
   inset: -1px; /* bleed under the border */
   border-radius: inherit;
-  background:
-    radial-gradient(120% 90% at 20% 10%, color-mix(in oklab, var(--accent) 12%, transparent), transparent 65%),
-    radial-gradient(120% 90% at 80% 90%, color-mix(in oklab, var(--accent) 16%, transparent), transparent 65%),
-    linear-gradient(180deg, color-mix(in oklab, var(--color-bg) 90%, transparent), color-mix(in oklab, var(--color-bg) 96%, transparent));
+  background: radial-gradient(
+      120% 90% at 20% 10%,
+      color-mix(in oklab, var(--accent) 12%, transparent),
+      transparent 65%
+    ),
+    radial-gradient(
+      120% 90% at 80% 90%,
+      color-mix(in oklab, var(--accent) 16%, transparent),
+      transparent 65%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-bg) 90%, transparent),
+      color-mix(in oklab, var(--color-bg) 96%, transparent)
+    );
   z-index: 0;
 }
 
@@ -59,7 +70,7 @@
 @media (prefers-reduced-motion: no-preference) {
   .wrapper {
     transition: border-color var(--theme-transition) ease-in-out,
-                background-color var(--theme-transition) ease-in-out,
-                box-shadow var(--theme-transition) ease-in-out;
+      background-color var(--theme-transition) ease-in-out,
+      box-shadow var(--theme-transition) ease-in-out;
   }
 }
