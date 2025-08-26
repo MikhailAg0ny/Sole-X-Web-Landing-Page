@@ -1,5 +1,9 @@
 /* Services page styles - mobile first */
-.services { padding: calc(56px + var(--safe-top)) 0 calc(72px + var(--safe-bottom)); }
+/* Extra bottom space so the fixed footer peek doesn't overlap */
+.services { padding: calc(56px + var(--safe-top)) 0 calc(120px + var(--safe-bottom)); }
+@media (min-width: 900px) {
+  .services { padding-bottom: calc(96px + var(--safe-bottom)); }
+}
 
 .container {
   width: min(1100px, 100%);
@@ -64,41 +68,102 @@
 .media {
   width: 100%;
   aspect-ratio: 4 / 3;
-  background: var(--card-muted, #f3f3f3);
+  background: var(--elev); /* match model canvas card */
   overflow: hidden;
-  border-radius: 12px;
-  cursor: zoom-in;
+  border-radius: 16px;
+  border: 1px solid var(--border);
   position: relative;
+  isolation: isolate; /* ensure mix-blend-mode targets this backdrop */
+  box-shadow: var(--shadow-1);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.touchable { cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; }
+.touchable:focus { outline: none; }
+.touchable:focus-visible { box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 30%, transparent); }
+
+/* Soft hue background layer behind the images (borrowed from ModelCanvas) */
+.media::before {
+  content: "";
+  position: absolute;
+  inset: -1px; /* bleed under the border */
+  border-radius: inherit;
+  /* Centered hue like the 3D canvas but focused in the middle for engagement */
+  background:
+    radial-gradient(
+      140% 120% at 50% 50%,
+      color-mix(in oklab, var(--accent) 18%, transparent) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-bg) 90%, transparent),
+      color-mix(in oklab, var(--color-bg) 96%, transparent)
+    );
+  z-index: 0;
 }
 
-.media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transform: scale(1);
-  transition: transform 280ms ease;
-}
-
-.media:hover img {
-  transform: scale(1.05);
-}
-
+/* Subtle vignette for depth */
 .media::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    120% 90% at 50% 10%,
-    transparent 0%,
-    color-mix(in oklab, var(--color-fg) 10%, transparent) 100%
-  );
-  opacity: 0;
-  transition: opacity 180ms ease;
+  border-radius: inherit;
+  background: radial-gradient(120% 120% at 50% 50%, transparent 68%, color-mix(in oklab, var(--color-bg) 8%, transparent) 100%);
+  pointer-events: none;
+  z-index: 0;
 }
 
-.media:hover::after {
-  opacity: 1;
+/* Layered before/after */
+.media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* keep full shoe visible over hue */
+  display: block;
+  z-index: 1; /* above hue */
+  transition: opacity 220ms ease, transform 280ms ease;
+}
+.before { opacity: 1; transform: scale(1); }
+.after { opacity: 0; transform: scale(1.02); }
+@media (hover: hover) and (pointer: fine) {
+  .media:hover .after { opacity: 1; transform: scale(1); }
+  .media:hover .before { opacity: 0.0; transform: scale(1.02); }
+}
+
+/* Lift the media slightly on hover (desktop) */
+.item:hover .media { transform: translateY(-2px); box-shadow: 0 12px 28px color-mix(in oklab, var(--color-fg) 12%, transparent); }
+
+/* Mobile/coarse pointers: allow tapping the media to toggle */
+.showAfter .after { opacity: 1; transform: scale(1); }
+.showAfter .before { opacity: 0; transform: scale(1.02); }
+
+.toggle {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 12px;
+  z-index: 2;
+  border: 1px solid color-mix(in oklab, var(--color-fg) 20%, transparent);
+  background: color-mix(in oklab, var(--color-bg) 70%, transparent);
+  color: var(--color-fg);
+  border-radius: 999px;
+  font-weight: 700;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  backdrop-filter: blur(6px) saturate(1.1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .toggle { display: none; }
+}
+
+/* Mobile layout polish */
+@media (max-width: 540px) {
+  .item { gap: 16px; padding: 16px; }
+  .prices { gap: 10px; }
+  .priceBadge { padding: 10px 14px; font-size: 1rem; }
+  .toggle { bottom: 10px; padding: 10px 14px; }
 }
 
 .content {

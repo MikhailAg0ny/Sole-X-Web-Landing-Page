@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import styles from './Navbar.module.css'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
@@ -10,6 +10,7 @@ export default function Navbar() {
   )
   const [scrolled, setScrolled] = useState(false)
   const linksRef = useRef(null)
+  const location = useLocation()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4)
@@ -61,6 +62,13 @@ export default function Navbar() {
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
 
+  // Close menu and scroll to top on route change (improves mobile UX between pages)
+  useEffect(() => {
+    if (open) setOpen(false)
+    // Scroll to top for a consistent page entry on mobile
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [location.pathname])
+
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.inner}>
@@ -76,7 +84,7 @@ export default function Navbar() {
           aria-label="Menu" 
           aria-expanded={open} 
           aria-controls="site-nav"
-          onClick={() => setOpen(!open)}
+          onClick={() => { if (isMobile) setOpen(!open) }}
         >
           <span />
           <span />
@@ -85,7 +93,7 @@ export default function Navbar() {
         
         <nav
           id="site-nav"
-          className={`${styles.nav} ${open ? styles.open : ''}`}
+          className={`${styles.nav} ${isMobile && open ? styles.open : ''}`}
           aria-label="Main"
           aria-hidden={isMobile ? !open : undefined}
         >
@@ -136,7 +144,7 @@ export default function Navbar() {
       </div>
       
       {/* Mobile overlay */}
-      {open && <div className={styles.overlay} onClick={() => setOpen(false)} />}
+  {isMobile && open && <div className={styles.overlay} onClick={() => setOpen(false)} />}
     </header>
   )
 }
