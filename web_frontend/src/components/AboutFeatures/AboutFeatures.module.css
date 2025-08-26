@@ -183,3 +183,27 @@
   .heading { font-size: clamp(1.15rem, 0.8rem + 1.4vw, 1.6rem); }
   .kicker { font-size: clamp(.58rem, .42rem + .5vw, .74rem); padding: 3px 8px; }
 }
+
+/* Short-screen optimizations to prevent overflow and keep the module within view */
+@media (max-height: 740px) and (max-width: 900px) {
+  .af { min-height: auto; }
+  .container { padding: 0 14px; }
+  .layout { gap: 16px; }
+  .aboutGrid { gap: 12px; }
+  .heading { font-size: clamp(1.1rem, 0.85rem + 1.4vw, 1.5rem); }
+  .lead { margin: 0 0 8px; }
+  .points li { gap: 10px; }
+  .rotator { width: 100%; }
+  .stage { aspect-ratio: 4 / 3; }
+  .dots { margin-top: 8px; }
+}
+
+@media (max-height: 620px) and (max-width: 900px) {
+  .layout { gap: 14px; }
+  .aboutGrid { gap: 10px; }
+  .kicker { padding: 2px 8px; }
+  .lead { margin-bottom: 6px; }
+  .body { margin-bottom: 6px; }
+  .points { margin: 8px 0 8px; }
+  .dots { margin-top: 6px; }
+}

@@ -80,7 +80,7 @@
 @media (max-width: 600px) {
   .grid { gap: 18px; }
   .title { font-size: clamp(2.8rem, 12vw + 0.6rem, 4.2rem); }
-  .colModel { min-height: clamp(380px, 48dvh, 600px); }
+  .colModel { min-height: clamp(280px, 46dvh, 540px); }
 }
 .ctaPrimary {
   background: var(--color-fg);
@@ -138,4 +138,27 @@
   .grid {
     align-items: center;
   }
+}
+
+/* Short-screen optimizations for small phones in landscape or very short portrait */
+@media (max-height: 740px) and (max-width: 900px) {
+  .hero { padding: calc(56px + var(--safe-top)) 0 calc(48px + var(--safe-bottom)); }
+  .grid { gap: 16px; }
+  .title { font-size: clamp(2.4rem, 10.5vw + 0.4rem, 3.8rem); }
+  .headline { font-size: clamp(1.5rem, 4.6vw + 0.35rem, 2.6rem); }
+  .subtitle { font-size: clamp(.95rem, 1.1vw + .72rem, 1.1rem); margin: 8px 0 16px; }
+  .colModel { min-height: clamp(240px, 40dvh, 480px); }
+  .actions { gap: 14px; }
+  .ctaPrimary, .ctaSecondary { padding: 12px 18px; }
+}
+
+@media (max-height: 620px) and (max-width: 900px) {
+  .hero { padding: calc(44px + var(--safe-top)) 0 calc(36px + var(--safe-bottom)); }
+  .grid { gap: 14px; }
+  .title { font-size: clamp(2rem, 9.5vw, 3.2rem); }
+  .headline { font-size: clamp(1.25rem, 4vw + 0.25rem, 2.2rem); }
+  .subtitle { margin: 6px 0 12px; max-width: 34ch; }
+  .colModel { min-height: clamp(200px, 36dvh, 420px); }
+  .actions { gap: 12px; }
+  .ctaPrimary, .ctaSecondary { padding: 10px 16px; }
 }
