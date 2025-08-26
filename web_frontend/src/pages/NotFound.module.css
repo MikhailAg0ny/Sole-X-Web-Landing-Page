@@ -1,0 +1,2 @@
+.section { padding: calc(64px + var(--safe-top)) 0 calc(80px + var(--safe-bottom)); }
+.container { width: min(1100px, 100%); margin-inline: auto; padding: 0 16px; text-align: center; }

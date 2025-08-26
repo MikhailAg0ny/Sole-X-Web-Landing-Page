@@ -1,0 +1,16 @@
+/* Mobile-first, safe-area aware section for the Gallery page */
+.section {
+  padding: calc(56px + var(--safe-top)) 0 calc(72px + var(--safe-bottom));
+}
+.container {
+  width: min(1100px, 100%);
+  margin-inline: auto;
+  padding: 0 16px;
+}
+.header {
+  margin: 0 0 14px;
+}
+.sub {
+  margin: 0;
+  color: var(--muted);
+}

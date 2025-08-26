@@ -1,11 +1,12 @@
 .hero {
-  padding: 84px 0 72px; /* refined breathing room */
+  padding: calc(72px + var(--safe-top)) 0 calc(64px + var(--safe-bottom)); /* mobile-safe areas by default */
   min-height: 100vh; /* baseline */
   background: linear-gradient(
     180deg,
     color-mix(in oklab, var(--color-bg) 90%, transparent),
     color-mix(in oklab, var(--color-bg) 100%, transparent)
   );
+  overflow-x: clip; /* guard tiny overflow on phones */
 }
 /* Prefer dynamic viewport to better match browser chrome/zoom behavior */
 @supports (height: 100dvh) {
@@ -25,8 +26,9 @@
   padding: 0 16px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px; /* larger layout gap */
+  gap: 24px; /* tighter on mobile */
   align-items: center; /* center vertically for stronger hero focus */
+  overflow-x: clip; /* prevent tiny overflow due to rounding */
 }
 .colText {
   text-align: center;
@@ -37,11 +39,7 @@
   margin-inline: auto;
 }
 .colModel {
-  min-height: clamp(
-    500px,
-    55dvh,
-    780px
-  ); /* larger visual footprint for the model */
+  min-height: clamp(480px, 52dvh, 740px); /* tuned to reduce excess gap on desktop */
 }
 .title {
   font-size: clamp(
@@ -56,7 +54,7 @@
 }
 .headline {
   margin: 2px 0 0;
-  font-size: clamp(2.3rem, 3.6vw + 0.6rem, 3.4rem);
+  font-size: clamp(1.9rem, 5.4vw + 0.4rem, 3.2rem);
   font-weight: 900;
   letter-spacing: 0.1px;
   line-height: 1.12;
@@ -68,7 +66,7 @@
 .subtitle {
   color: var(--muted);
   margin: 12px 0 24px; /* spacing below headline */
-  font-size: clamp(1.15rem, 1.2vw + 0.75rem, 1.5rem);
+  font-size: clamp(1rem, 1.4vw + 0.7rem, 1.3rem);
   max-width: 36ch; /* keep tagline tidy */
   margin-left: auto;
   margin-right: auto;
@@ -78,6 +76,11 @@
   gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
+}
+@media (max-width: 600px) {
+  .grid { gap: 18px; }
+  .title { font-size: clamp(2.8rem, 12vw + 0.6rem, 4.2rem); }
+  .colModel { min-height: clamp(380px, 48dvh, 600px); }
 }
 .ctaPrimary {
   background: var(--color-fg);
@@ -106,9 +109,11 @@
 }
 
 @media (min-width: 900px) {
+  .hero { padding: 84px 0 72px; } /* restore desktop spacing */
   .grid {
-    grid-template-columns: 1fr 4fr; /* ~20% text / 80% model */
-    gap: 48px;
+  grid-template-columns: 1.2fr 3.8fr; /* slight balance for visual center */
+  gap: 48px;
+  align-items: center; /* center both columns vertically */
   }
   .colText {
     text-align: left;
@@ -118,7 +123,7 @@
     align-items: start;
   }
   .colModel {
-    align-self: center;
+  align-self: center;
   }
   .subtitle {
     margin: 12px 0 22px;
