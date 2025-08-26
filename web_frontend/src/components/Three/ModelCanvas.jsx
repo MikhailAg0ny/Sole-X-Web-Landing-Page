@@ -30,7 +30,7 @@ function ShoeModel({ url, rotation = [0, Math.PI, 0], scale = 1, spin = true, sp
     const center = new THREE.Vector3()
     box.getCenter(center)
     model.position.set(-center.x, -box.min.y, -center.z)
-    setIsPositioned(true)
+  setIsPositioned(true)
   }, [model])
 
   useEffect(() => {
@@ -42,6 +42,7 @@ function ShoeModel({ url, rotation = [0, Math.PI, 0], scale = 1, spin = true, sp
   innerRef.current.position.y -= box.min.y
     setIsPositioned(true)
   }, [rotation])
+
 
   // One-shot re-ground after first frame to avoid any late material/decoder updates shifting bounds
   useFrame(() => {
@@ -78,17 +79,11 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
       // Force a re-render of the canvas to fix positioning issues
       window.dispatchEvent(new Event('resize'))
     }
-
     const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        // Small delay to ensure DOM is ready after alt-tab
-        setTimeout(handleResize, 100)
-      }
+      if (!document.hidden) setTimeout(handleResize, 100)
     }
-
     window.addEventListener('resize', handleResize)
     document.addEventListener('visibilitychange', handleVisibilityChange)
-
     return () => {
       window.removeEventListener('resize', handleResize)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
@@ -99,6 +94,8 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
   const mqShort = typeof window !== 'undefined' ? window.matchMedia('(max-height: 620px)').matches : false
   const fov = mqSmall ? (mqShort ? 60 : 55) : 45
   const dpr = mqSmall ? [1, mqShort ? 1.25 : 1.5] : [1, 2]
+
+  const modelGroupRef = useRef()
 
   return (
     <div className={styles.wrapper}>
@@ -125,7 +122,7 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
             shadow-mapSize-width={1024}
             shadow-mapSize-height={1024}
           />
-          <group position={offset}>
+          <group ref={modelGroupRef} position={offset}>
             <ShoeModel url={modelUrl} rotation={rotation ?? (rearView ? [0, Math.PI, 0] : [0, 0, 0])} scale={scale} spin={spin} spinSpeed={spinSpeed} />
           </group>
           <ContactShadows position={[0, (offset?.[1] || 0) - 0.001, 0]} opacity={0.35} blur={2.8} scale={10} far={8} />
