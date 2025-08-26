@@ -1,16 +1,108 @@
 .about {
-	padding: 40px 0;
-	border-top: 1px solid var(--border);
-	border-bottom: 1px solid var(--border);
-	transition: border-color var(--theme-transition) ease-in-out;
+  /* Remove vertical padding so 100vh fit is exact */
+  padding: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  transition: border-color var(--theme-transition) ease-in-out;
+  /* Full-screen fit similar to Hero */
+  min-height: calc(100vh - var(--header-h)); /* baseline minus sticky header */
+  display: grid; /* allow vertical centering */
+  align-items: center;
+}
+@supports (height: 100dvh) {
+  .about {
+    min-height: calc(100dvh - var(--header-h));
+  }
+}
+@supports (height: 100svh) {
+  .about {
+    min-height: calc(100svh - var(--header-h));
+  }
 }
 .inner {
-	width: min(900px, 100%);
-	margin-inline: auto;
-	padding: 0 16px;
-	color: var(--muted);
-	line-height: 1.8;
-	font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
-	letter-spacing: 0.01em;
-	transition: color var(--theme-transition) ease-in-out;
+  width: min(900px, 100%);
+  margin-inline: auto;
+  padding: 0 16px;
+  color: var(--muted);
+  line-height: 1.8;
+  font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+  letter-spacing: 0.01em;
+  transition: color var(--theme-transition) ease-in-out;
+}
+/* Two-column responsive layout */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.content {
+  order: 1;
+}
+.media {
+  order: 2;
+}
+.img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--elev);
+  box-shadow: var(--shadow-1);
+}
+/* New structured typography for professional copy */
+.heading {
+  margin: 0 0 10px;
+  font-size: clamp(1.3rem, 1.1rem + 1.2vw, 1.9rem);
+  font-weight: 800;
+  color: var(--color-fg);
+}
+.lead {
+  color: var(--color-fg);
+  margin: 0 0 10px;
+}
+.points {
+  margin: 12px 0 10px 0;
+  padding: 0;
+  list-style: none;
+}
+.points li {
+  margin: 8px 0;
+  display: flex;
+  align-items: center; /* center icons with text */
+  gap: 12px;
+  line-height: 1.6; /* slightly tighter so icon centers visually */
+}
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px; /* circular for consistent style */
+  color: var(--color-fg);
+  background: color-mix(in oklab, var(--color-fg) 6%, transparent);
+  border: 1px solid var(--border);
+  flex: 0 0 26px;
+}
+.note {
+  margin-top: 4px;
+  color: color-mix(in oklab, var(--color-fg) 80%, transparent);
+}
+
+@media (min-width: 900px) {
+  .layout {
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 28px;
+    align-items: center; /* center the two columns relative to section */
+  }
+  .content {
+    order: 1;
+  }
+  .media {
+    order: 2;
+    align-self: center; /* center image column to match text block */
+    display: flex;
+    align-items: center;
+  }
 }

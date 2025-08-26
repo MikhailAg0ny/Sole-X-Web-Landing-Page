@@ -1,49 +1,136 @@
 .hero {
-  padding: 64px 0 48px;
+  padding: 84px 0 72px; /* refined breathing room */
+  min-height: 100vh; /* baseline */
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--color-bg) 90%, transparent),
+    color-mix(in oklab, var(--color-bg) 100%, transparent)
+  );
+}
+/* Prefer dynamic viewport to better match browser chrome/zoom behavior */
+@supports (height: 100dvh) {
+  .hero {
+    min-height: 100dvh;
+  }
+}
+/* Fallback for mobile URL bars if dvh is not supported */
+@supports (height: 100svh) {
+  .hero {
+    min-height: 100svh;
+  }
 }
 .grid {
-  width: min(1200px, 100%);
+  width: min(1360px, 100%);
   margin-inline: auto;
   padding: 0 16px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
-  align-items: center;
+  gap: 32px; /* larger layout gap */
+  align-items: center; /* center vertically for stronger hero focus */
 }
-.colText { text-align: center; }
-.colModel { min-height: 300px; }
+.colText {
+  text-align: center;
+  display: grid;
+  align-content: start;
+  gap: 20px; /* more spacing between hero elements */
+  justify-items: center;
+  margin-inline: auto;
+}
+.colModel {
+  min-height: clamp(
+    500px,
+    55dvh,
+    780px
+  ); /* larger visual footprint for the model */
+}
 .title {
-  font-size: clamp(2.2rem, 6vw + 1rem, 4rem);
-  margin: 0 0 8px;
+  font-size: clamp(
+    4rem,
+    9.5vw + 1rem,
+    7.6rem
+  ); /* bigger for full-screen presence */
+  margin: 0;
   font-weight: 900;
   letter-spacing: 0.3px;
+  line-height: 1.05;
+}
+.headline {
+  margin: 2px 0 0;
+  font-size: clamp(2.3rem, 3.6vw + 0.6rem, 3.4rem);
+  font-weight: 900;
+  letter-spacing: 0.1px;
+  line-height: 1.12;
+  text-wrap: balance;
+  max-width: 22ch; /* balanced, readable line length */
+  margin-left: auto;
+  margin-right: auto;
 }
 .subtitle {
   color: var(--muted);
-  margin: 0 0 24px;
-  font-size: clamp(1rem, 1.2vw + 0.6rem, 1.25rem);
+  margin: 12px 0 24px; /* spacing below headline */
+  font-size: clamp(1.15rem, 1.2vw + 0.75rem, 1.5rem);
+  max-width: 36ch; /* keep tagline tidy */
+  margin-left: auto;
+  margin-right: auto;
 }
 .actions {
   display: flex;
-  gap: 12px;
+  gap: 20px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 .ctaPrimary {
   background: var(--color-fg);
   color: var(--color-bg);
-  padding: 12px 18px;
+  padding: 14px 22px; /* slightly bigger buttons */
   border-radius: 10px;
   font-weight: 800;
+  box-shadow: var(--shadow-ambient);
+  transition: box-shadow 180ms ease, transform 160ms ease;
 }
 .ctaSecondary {
   border: 1px solid var(--border);
   color: var(--color-fg);
-  padding: 12px 18px;
+  padding: 14px 22px;
   border-radius: 10px;
+  box-shadow: var(--ring);
+  transition: box-shadow 180ms ease, transform 160ms ease;
+}
+.ctaPrimary:hover {
+  box-shadow: var(--shadow-2);
+  transform: translateY(-1px);
+}
+.ctaSecondary:hover {
+  box-shadow: var(--shadow-1);
+  transform: translateY(-1px);
 }
 
 @media (min-width: 900px) {
-  .grid { grid-template-columns: 1fr 1fr; gap: 28px; }
-  .colText { text-align: left; }
-  .actions { justify-content: flex-start; }
+  .grid {
+    grid-template-columns: 1fr 4fr; /* ~20% text / 80% model */
+    gap: 48px;
+  }
+  .colText {
+    text-align: left;
+    gap: 20px;
+    max-width: 700px; /* comfortable for larger type */
+    justify-self: start; /* align with left edge */
+    align-items: start;
+  }
+  .colModel {
+    align-self: center;
+  }
+  .subtitle {
+    margin: 12px 0 22px;
+  }
+  .actions {
+    justify-content: flex-start; /* align CTAs with left edge on desktop */
+  }
+}
+
+/* On taller screens, softly center the columns vertically for better composition */
+@media (min-height: 800px) and (min-width: 900px) {
+  .grid {
+    align-items: center;
+  }
 }

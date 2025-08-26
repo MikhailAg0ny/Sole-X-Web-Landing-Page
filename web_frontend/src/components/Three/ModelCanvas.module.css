@@ -1,9 +1,65 @@
 .wrapper {
   width: 100%;
-  height: clamp(260px, 40vh, 360px);
-  min-height: 240px;
+  height: auto;
+  aspect-ratio: 4 / 3; /* scales with column width for better alignment */
+  min-height: clamp(320px, 40vw, 520px);
+  max-height: min(70dvh, 760px);
   background: var(--elev);
   border: 1px solid var(--border);
   border-radius: 16px;
   overflow: hidden;
+  position: relative;
+  isolation: isolate; /* prevents stacking overlap */
+  box-shadow: var(--shadow-1);
+  /* Ensure stable positioning */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Soft hue background layer behind the canvas (subtle) */
+.wrapper::before {
+  content: "";
+  position: absolute;
+  inset: -1px; /* bleed under the border */
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 90% at 20% 10%, color-mix(in oklab, var(--accent) 12%, transparent), transparent 65%),
+    radial-gradient(120% 90% at 80% 90%, color-mix(in oklab, var(--accent) 16%, transparent), transparent 65%),
+    linear-gradient(180deg, color-mix(in oklab, var(--color-bg) 90%, transparent), color-mix(in oklab, var(--color-bg) 96%, transparent));
+  z-index: 0;
+}
+
+/* Ensure the R3F <canvas> fills its container */
+.wrapper > canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* Prevent canvas from floating or shifting */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  z-index: 1; /* above hue background */
+}
+
+/* Force hardware acceleration and prevent positioning issues */
+.wrapper > canvas:focus {
+  outline: none;
+}
+
+@media (min-width: 900px) {
+  .wrapper {
+  max-width: clamp(520px, 42vw, 640px);
+    margin-inline: auto; /* keep centered within the right column */
+  }
+}
+
+/* Ensure stable positioning during theme transitions */
+@media (prefers-reduced-motion: no-preference) {
+  .wrapper {
+    transition: border-color var(--theme-transition) ease-in-out,
+                background-color var(--theme-transition) ease-in-out,
+                box-shadow var(--theme-transition) ease-in-out;
+  }
 }

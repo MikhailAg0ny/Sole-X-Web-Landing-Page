@@ -1,20 +1,33 @@
 import styles from './Hero.module.css'
+import SoleXLogo from '../SoleXLogo'
 import ModelCanvas from '../Three/ModelCanvas'
+import { Link, useLocation } from 'react-router-dom'
 
 export default function Hero() {
+  const location = useLocation()
+  
   return (
     <section className={styles.hero}>
       <div className={styles.grid}>
         <div className={styles.colText}>
-          <h1 className={styles.title}>Sole X</h1>
-          <p className={styles.subtitle}>Premium Shoe Cleaning & Restoration</p>
+          <h1 className={styles.title}><SoleXLogo /></h1>
+          <h2 className={styles.headline}>Bring Your Kicks Back to Life.</h2>
+          <p className={styles.subtitle}>Quick refreshes, deep cleans, and sole whitening—tailored to your pair.</p>
           <div className={styles.actions}>
-            <a className={styles.ctaPrimary} href="#book">Book a Service</a>
-            <a className={styles.ctaSecondary} href="#services">View Services</a>
+            <Link className={styles.ctaPrimary} to="/contact">Contact Us Now</Link>
+            <Link className={styles.ctaSecondary} to="/services">View Services</Link>
           </div>
         </div>
         <div className={styles.colModel}>
-          <ModelCanvas modelUrl="/models/nike_air_zoom_pegasus_36.optim.glb" rearView={true} scale={0.75} />
+          <ModelCanvas
+            key={`${location.pathname}-hero-model`}
+            modelUrl="/models/air_jordan_1_retro_high_bred_toe.glb"
+            rotation={[0, Math.PI * 5, 0]}
+            rearView={true}
+            scale={1.15}
+            offset={[0.02, -0.12, -0.18]}
+            targetY={0.55}
+          />
         </div>
       </div>
     </section>

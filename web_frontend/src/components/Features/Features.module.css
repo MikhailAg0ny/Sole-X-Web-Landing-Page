@@ -1,5 +1,6 @@
 .features {
   padding: 56px 0;
+  border-top: 1px solid var(--border);
 }
 .grid {
   width: min(1100px, 100%);
@@ -14,11 +15,43 @@
   border-radius: 12px;
   padding: 18px;
   background: var(--elev);
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  box-shadow: var(--shadow-ambient);
+  transform: translateY(0) scale(1);
+  transition: transform 180ms ease, box-shadow 220ms ease, border-color var(--theme-transition) ease;
 }
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: 0 0 0 rgba(255,255,255,0);
+  transition: box-shadow 220ms ease;
+}
+.card:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: var(--shadow-2);
+}
+.card:hover::after { box-shadow: var(--glow-1); }
 .card h3 {
   margin: 0 0 8px;
 }
 .card p {
   margin: 0;
   color: var(--muted);
+}
+.more {
+  display: inline-block;
+  margin-top: 10px;
+  font-weight: 700;
+  opacity: 0.0;
+  transform: translateY(4px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+.card:hover .more {
+  opacity: 1;
+  transform: translateY(0);
 }

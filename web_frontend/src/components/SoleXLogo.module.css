@@ -1,0 +1,37 @@
+.logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-fg);
+}
+
+.word {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+    Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji",
+    "Segoe UI Emoji";
+  font-weight: 900;
+  letter-spacing: 0.12em; /* stronger tracking like the reference */
+  font-size: clamp(56px, 9vw, 132px);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.icon {
+  width: clamp(84px, 8.5vw, 160px);
+  aspect-ratio: 1 / 1; /* perfect square */
+  border: 6px solid var(--color-fg);
+  display: grid;
+  place-items: center;
+  padding: 0; /* no inner gap */
+}
+
+.x {
+  font-weight: 900;
+  font-size: clamp(64px, 8.4vw, 132px); /* fill more of the box */
+  line-height: 1; /* avoid extra top/bottom space */
+  display: block; /* remove inline baseline drift */
+  transform: translateY(-1%); /* subtle upward nudge for optical centering */
+}
+
+/* Uses CSS variables for theme; no OS-based overrides needed */
