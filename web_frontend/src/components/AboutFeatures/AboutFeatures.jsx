@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 const features = [
-  { title: 'Deep Clean', desc: 'Professional cleaning for all materials.' },
-  { title: 'Restoration', desc: 'Color touch-ups and midsole whitening.' },
-  { title: 'Protection', desc: 'Water and stain repellent coating.' },
+  { title: 'General Cleaning', desc: 'Quick, material‑safe refresh for daily wear.' },
+  { title: 'Sole Whitening', desc: 'Targets yellowing to restore brightness.' },
+  { title: 'Deep Cleaning', desc: 'Inside‑out clean for stubborn dirt and odors.' },
 ]
 
 export default function AboutFeatures() {
@@ -185,16 +185,17 @@ export default function AboutFeatures() {
         <div className={styles.layout}>
           <div className={styles.aboutGrid}>
             <div className={styles.content}>
-              <h2 className={styles.heading}><span className={styles.kicker}>Crafted Care</span> About Sole X</h2>
+              <div className={styles.headerRow}>
+                <span className={styles.kicker}>Sneaker Care, Done Right</span>
+                <h2 className={styles.heading}>About{'\u00A0'}Sole{'\u00A0'}X</h2>
+              </div>
               <p className={styles.lead}>
-                We're a sneaker care studio dedicated to bringing your pairs back to life.
-                From everyday cleans to full restorations, we treat each shoe with the same
-                attention to detail—so they look fresh, feel great, and last longer.
+                I bring tired pairs back to life with careful, hands‑on work. From a fast refresh to a full restoration,
+                every sneaker gets the same focus on cleanliness, comfort, and longevity.
               </p>
               <p className={styles.body}>
-                Our process uses material-safe solutions and a careful, hand-finished approach.
-                Whether it's a quick refresh, a deep clean inside and out, or a targeted sole whitening,
-                we tailor our work to the materials and construction of your sneakers.
+                Using material‑safe solutions and a steady, hand‑finished process, I tailor the clean to your pair.
+                Need a simple touch‑up, inside‑out deep clean, or targeted sole whitening to fight yellowing? I’ve got you.
               </p>
               <ul className={styles.points}>
                 <li>
@@ -203,7 +204,7 @@ export default function AboutFeatures() {
                       <path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm-1.1 14.2-3.6-3.6 1.4-1.4 2.2 2.2 4.6-4.6 1.4 1.4-6 6z"/>
                     </svg>
                   </span>
-                  <span>General Cleaning — everyday refresh for your rotation</span>
+                  <span>General Cleaning — quick, material‑safe refresh for daily wear</span>
                 </li>
                 <li>
                   <span className={styles.icon} aria-hidden="true">
@@ -211,7 +212,7 @@ export default function AboutFeatures() {
                       <path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm-1.1 14.2-3.6-3.6 1.4-1.4 2.2 2.2 4.6-4.6 1.4 1.4-6 6z"/>
                     </svg>
                   </span>
-                  <span>Sole Whitening — removes yellowing, restores brightness</span>
+                  <span>Sole Whitening — targets yellowing and brings back that bright look</span>
                 </li>
                 <li>
                   <span className={styles.icon} aria-hidden="true">
@@ -219,12 +220,11 @@ export default function AboutFeatures() {
                       <path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm-1.1 14.2-3.6-3.6 1.4-1.4 2.2 2.2 4.6-4.6 1.4 1.4-6 6z"/>
                     </svg>
                   </span>
-                  <span>Deep Cleaning — full inside-out treatment for stubborn dirt and odors</span>
+                  <span>Deep Cleaning — full inside‑out treatment for stubborn dirt and odors</span>
                 </li>
               </ul>
               <p className={styles.note}>
-                Transparent pricing, careful handling, and quick turnaround.
-                Send us a message to get started or browse our services to learn more.
+                Transparent pricing, careful handling, and a quick turnaround. Message me to book your pair today.
               </p>
             </div>
             <div className={styles.media}>

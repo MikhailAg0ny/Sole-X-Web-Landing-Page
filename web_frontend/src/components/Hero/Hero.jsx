@@ -12,7 +12,7 @@ export default function Hero() {
         <div className={styles.colText}>
           <h1 className={styles.title}><SoleXLogo /></h1>
           <h2 className={styles.headline}>Bring Your Kicks Back to Life.</h2>
-          <p className={styles.subtitle}>Professional Sneaker Cleaning & Restoration</p>
+          <p className={styles.subtitle}>Quick refreshes, deep cleans, and sole whitening—tailored to your pair.</p>
           <div className={styles.actions}>
             <Link className={styles.ctaPrimary} to="/contact">Contact Us Now</Link>
             <Link className={styles.ctaSecondary} to="/services">View Services</Link>

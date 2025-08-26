@@ -2,9 +2,9 @@ import styles from './Features.module.css'
 import { Link } from 'react-router-dom'
 
 const items = [
-  { title: 'Deep Clean', desc: 'Professional cleaning for all materials.' },
-  { title: 'Restoration', desc: 'Color touch-ups and midsole whitening.' },
-  { title: 'Protection', desc: 'Water and stain repellent coating.' },
+  { title: 'General Cleaning', desc: 'Quick, material‑safe refresh for daily wear.' },
+  { title: 'Sole Whitening', desc: 'Targets yellowing to restore brightness.' },
+  { title: 'Deep Cleaning', desc: 'Inside‑out clean for stubborn dirt and odors.' },
 ]
 
 export default function Features() {
