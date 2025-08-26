@@ -1,8 +1,4 @@
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 40px 16px 72px;
-}
+.container { max-width: 1100px; margin: 0 auto; padding: calc(40px + var(--safe-top)) 16px calc(72px + var(--safe-bottom)); }
 
 .header {
   text-align: center;
@@ -55,6 +51,12 @@
   display: grid;
   gap: 10px;
 }
+.displayItem {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.value { color: var(--color-fg); opacity: 0.9; }
 .k {
   font-weight: 600;
   margin-right: 6px;
@@ -82,9 +84,10 @@
 .socialRow {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 .socialContact {
-  flex: 1 1 0;
+  flex: 1 1 280px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -194,6 +197,13 @@
   .row {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+@media (max-width: 480px) {
+  .actions { justify-content: stretch; }
+  button { width: 100%; }
+  .list { gap: 12px; }
+  .displayItem { flex-wrap: wrap; }
 }
 label {
   display: grid;

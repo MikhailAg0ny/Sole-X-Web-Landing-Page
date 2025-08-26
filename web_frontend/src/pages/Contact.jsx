@@ -31,7 +31,7 @@ export default function Contact() {
       <header className={styles.header} data-reveal>
         <h1>Contact Us</h1>
         <p className={styles.sub}>
-          Questions about cleaning, whitening, or pricing? Reach out — we’re quick to respond.
+          Questions about cleaning, whitening, or pricing? Reach out any time.
         </p>
       </header>
 
@@ -39,25 +39,17 @@ export default function Contact() {
         <div className={styles.card} data-reveal>
           <h2>Get in touch</h2>
           <ul className={styles.list}>
-            <li>
-              <a href="mailto:hello@solex.example" className={styles.link}>
-                <span className={styles.k}>Email:</span> hello@solex.example
-              </a>
+            <li className={styles.displayItem}>
+              <span className={styles.k}>Phone:</span>
+              <span className={styles.value}>0933 459 8479</span>
             </li>
-            <li>
-              <a href="tel:+639000000000" className={styles.link}>
-                <span className={styles.k}>Phone:</span> +63 900 000 0000
-              </a>
+            <li className={styles.displayItem}>
+              <span className={styles.k}>Location:</span>
+              <span className={styles.value}>Cebu City, Philippines</span>
             </li>
-            <li>
-              <a
-                href="https://maps.google.com/?q=Sole-X"
-                className={styles.link}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                <span className={styles.k}>Address:</span> 123 Sneaker St, QC, Metro Manila
-              </a>
+            <li className={styles.displayItem}>
+              <span className={styles.k}>Email:</span>
+              <span className={styles.value}>soleex.x11@gmail.com</span>
             </li>
           </ul>
 
@@ -93,8 +85,7 @@ export default function Contact() {
 
           <div className={styles.hours}>
             <h3>Hours</h3>
-            <p>Mon–Sat 10:00–19:00 • Sun 12:00–17:00</p>
-            <p>Avg response time: under 2 hours</p>
+            <p>Monday – Saturday • 8:00 AM – 6:00 PM</p>
           </div>
 
           <div className={styles.faq}>
@@ -102,10 +93,6 @@ export default function Contact() {
             <details>
               <summary>How long does cleaning take?</summary>
               <p>General Cleaning: 24–48 hours. Deep Cleaning/Whitening: 2–3 days.</p>
-            </details>
-            <details>
-              <summary>Do you accept walk‑ins?</summary>
-              <p>Yes. Booking ahead ensures faster turnaround at peak hours.</p>
             </details>
           </div>
         </div>
@@ -146,7 +133,7 @@ export default function Contact() {
             </a>
           </div>
           <p className={styles.helpText}>
-            You can still email us anytime at <a className={styles.link} href="mailto:hello@solex.example">hello@solex.example</a>.
+            You can email us anytime at <strong>soleex.x11@gmail.com</strong>.
           </p>
         </div>
       </div>

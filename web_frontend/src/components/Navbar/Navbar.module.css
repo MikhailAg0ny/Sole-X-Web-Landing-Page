@@ -5,7 +5,8 @@
   background: color-mix(in oklab, var(--color-bg) 80%, transparent);
   backdrop-filter: blur(10px) saturate(1.05);
   border-bottom: 1px solid var(--border);
-  transition: background-color 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+  transition: background-color 300ms ease, box-shadow 300ms ease,
+    border-color 300ms ease;
 }
 
 .scrolled {
@@ -59,7 +60,11 @@
 
 .brandText {
   font-size: 1.2rem;
-  background: linear-gradient(135deg, var(--color-fg) 0%, color-mix(in oklab, var(--accent) 40%, var(--color-fg)) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-fg) 0%,
+    color-mix(in oklab, var(--accent) 40%, var(--color-fg)) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -83,7 +88,8 @@
   position: relative;
   border-radius: 999px;
   font-weight: 500;
-  transition: color 200ms ease, transform 200ms ease, background-color 200ms ease, box-shadow 200ms ease;
+  transition: color 200ms ease, transform 200ms ease,
+    background-color 200ms ease, box-shadow 200ms ease;
   overflow: hidden;
 }
 
@@ -116,7 +122,7 @@
 .burger {
   display: none;
   width: 32px;
-  height: 24px;
+  height: 28px;
   padding: 0;
   border: 0;
   background: none;
@@ -130,7 +136,7 @@
   height: 2px;
   background: var(--color-fg);
   margin: 6px 0;
-  transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: center;
 }
 
@@ -167,7 +173,7 @@
   .burger {
     display: inline-block;
   }
-  
+
   .nav {
     position: fixed;
     left: 0;
@@ -175,39 +181,87 @@
     top: 0;
     bottom: 0;
   background: color-mix(in oklab, var(--color-bg) 96%, transparent);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-    padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* top align so all items can scroll into view */
+  gap: 18px;
+  padding: calc(24px + var(--safe-top)) 24px calc(24px + var(--safe-bottom));
     transform: translateX(-100%);
-    transition: transform 400ms cubic-bezier(0.4, 0.0, 0.2, 1);
-    z-index: 25;
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 40; /* above header/toggles */
+  overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  height: 100dvh;
   }
-  
+
   .nav.open {
     transform: translateX(0);
   }
-  
+
   .navLinks {
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
     text-align: center;
+  width: 100%;
+  max-width: 360px;
+    margin-top: 24px;
   }
-  
+
+  .navHeader {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 560px;
+    background: color-mix(in oklab, var(--color-bg) 96%, transparent);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-fg) 12%, transparent);
+    padding: 10px 4px 10px;
+    gap: 12px;
+  }
+  .menuLabel {
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--color-fg) 80%, transparent);
+    padding-left: 4px;
+  }
+  .close {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in oklab, var(--color-fg) 18%, transparent);
+    background: color-mix(in oklab, var(--color-bg) 96%, transparent);
+    color: var(--color-fg);
+    display: inline-grid;
+    place-items: center;
+    cursor: pointer;
+    transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+  }
+  .close:hover { transform: translateY(-1px); box-shadow: var(--shadow-1); }
+  .close:focus-visible { outline: none; box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 24%, transparent); }
+
   .nav a {
-    font-size: 1.2rem;
-    padding: 16px 24px;
+    font-size: 1.15rem;
+    padding: 16px 22px;
     width: 100%;
     text-align: center;
     border-radius: 12px;
+    outline: none;
+  min-height: 48px;
   }
-  
+
   .nav a:hover {
     transform: translateY(-2px);
   }
-  
+
+  .nav a:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 24%, transparent);
+  }
+
   .rightSection {
     position: relative;
     z-index: 30;
@@ -216,4 +270,9 @@
 
 @media (min-width: 801px) {
   /* Remove underline animations on desktop for a cleaner aesthetic */
+  /* Ensure mobile-only elements are hidden on desktop */
+  .navHeader { display: none; }
+  /* Reset any potential transform from mobile open state */
+  .nav { transform: none !important; position: static; height: auto; padding: 0; background: transparent; overflow: visible; }
+  .navLinks { flex-direction: row; gap: 8px; margin-top: 0; max-width: none; width: auto; }
 }

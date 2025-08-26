@@ -8,7 +8,7 @@
 @supports (height: 100dvh) { .af { min-height: calc(100dvh - var(--header-h)); } }
 @supports (height: 100svh) { .af { min-height: calc(100dvh - var(--header-h)); } }
 
-.container { width: min(1200px, 100%); margin-inline: auto; padding: 0 16px; }
+.container { width: min(1200px, 100%); margin-inline: auto; padding: 0 16px; overflow: clip; }
 .layout { display: grid; gap: 24px; }
 
 /* About area */
@@ -169,6 +169,13 @@
 @media (min-width: 900px) { 
   .aboutGrid { grid-template-columns: 1.2fr 0.8fr; gap: 28px; }
   .heading { font-size: clamp(1.8rem, 1.2rem + 1.8vw, 2.6rem); }
+}
+@media (max-width: 600px) {
+  .layout { gap: 18px; }
+  .aboutGrid { gap: 14px; }
+  .headerRow { gap: 10px; }
+  .rotator { width: 100%; }
+  .arrow { width: 44px; height: 44px; }
 }
 
 /* Safety: further reduce sizes on very narrow screens so header stays one line without overflow */

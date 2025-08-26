@@ -1,12 +1,11 @@
 /* Services page styles - mobile first */
-.services {
-  padding: 56px 0 72px;
-}
+.services { padding: calc(56px + var(--safe-top)) 0 calc(72px + var(--safe-bottom)); }
 
 .container {
   width: min(1100px, 100%);
   margin-inline: auto;
   padding: 0 16px;
+  overflow-x: clip; /* guard against chip/box overflow */
 }
 
 .header {
@@ -42,14 +41,11 @@
   margin-inline: auto;
 }
 
-.list {
-  display: grid;
-  gap: 28px;
-}
+.list { display: grid; gap: 22px; }
 
 .item {
   display: grid;
-  gap: 16px;
+  gap: 14px;
   align-items: center;
   padding: 14px;
   border-radius: 14px;
@@ -67,7 +63,7 @@
 
 .media {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 3;
   background: var(--card-muted, #f3f3f3);
   overflow: hidden;
   border-radius: 12px;
@@ -112,7 +108,7 @@
 
 .itemTitle {
   margin: 0;
-  font-size: clamp(1.3rem, 2vw + 0.8rem, 1.9rem);
+  font-size: clamp(1.2rem, 1.8vw + 0.7rem, 1.7rem);
   font-weight: 900;
   letter-spacing: 0.2px;
 }
@@ -127,20 +123,16 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 10px;
+  padding: 8px 12px; /* thumb-friendly */
   border-radius: 999px;
   font-weight: 800;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   color: var(--color-bg);
   background: var(--color-fg);
   box-shadow: 0 8px 20px color-mix(in oklab, var(--color-fg) 18%, transparent);
 }
 
-.desc {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.6;
-}
+.desc { margin: 0; color: var(--muted); line-height: 1.65; }
 
 .note {
   margin: 0;
@@ -244,4 +236,9 @@
     width: 100%;
     max-width: 280px;
   }
+}
+
+@media (max-width: 420px) {
+  .item { padding: 12px; }
+  .priceBadge { font-size: 0.92rem; padding: 8px 10px; }
 }
