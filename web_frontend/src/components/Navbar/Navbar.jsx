@@ -2,6 +2,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import styles from './Navbar.module.css'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
+import CursorToggle from '../CursorToggle/CursorToggle'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
@@ -140,6 +141,7 @@ export default function Navbar() {
         
         <div className={styles.rightSection}>
           <ThemeToggle />
+          <CursorToggle />
         </div>
       </div>
       

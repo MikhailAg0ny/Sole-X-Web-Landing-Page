@@ -6,6 +6,15 @@
   --elev: #101114;
   --border: #1a1c20;
   --muted: #c9cbd4;
+  /* Safe area insets (defaults) */
+  --safe-top: 0px;
+  --safe-bottom: 0px;
+  /* Aliases used across components */
+  --surface: var(--elev);
+  --text: var(--color-fg);
+  --footer-fg: var(--color-fg);
+  --muted-fg: var(--muted);
+
   /* Black and white accent palette */
   --accent: #ffffff;
   --accent-strong: #e5e5e5;
@@ -31,17 +40,30 @@
   --accent-strong: #1a1a1a;
   --accent-weak: color-mix(in oklab, var(--accent) 18%, transparent);
   --theme-transition: 320ms;
+  /* Aliases for light theme */
+  --surface: var(--elev);
+  --text: var(--color-fg);
+  --footer-fg: var(--color-fg);
+  --muted-fg: var(--muted);
 }
+
+/* Cursor mode: when system is active, override the global custom cursor to auto */
+[data-cursor="system"] body {
+  cursor: auto !important;
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
+
 html,
 body,
 #root {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
@@ -50,29 +72,56 @@ body {
   background: var(--color-bg);
   transition: color var(--theme-transition) ease-in-out,
     background-color var(--theme-transition) ease-in-out;
+  /* Global custom cursor. Uses CSS vars set in main.jsx with a safe fallback */
+  cursor: var(--cursor-url, url("../assets/nike_air_jordan_1_cursor.png")) var(--cursor-hotspot-x, 24) var(--cursor-hotspot-y, 24), auto;
+  overflow-x: hidden; /* prevent horizontal scroll on small screens */
 }
+
+/* Ensure interactive controls inherit the custom cursor even if they set pointer */
+a,
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+label,
+select,
+summary,
+textarea {
+  cursor: inherit;
+}
+
 #root {
   view-transition-name: root;
 }
+
 /* Wave sweep reveal using clip-path inset with rounded leading edge */
 @supports (view-transition-name: root) {
+
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation-duration: var(--theme-transition);
     animation-timing-function: ease-in-out;
   }
+
   /* Start with the new theme masked to a narrow rounded strip from chosen side */
   ::view-transition-new(root) {
-    clip-path: inset(
-      0 var(--clip-right, 100%) 0 var(--clip-left, 0%) round var(--r1, 0)
-        var(--r2, 40vmax) var(--r3, 40vmax) var(--r4, 0)
-    );
+    clip-path: inset(0 var(--clip-right, 100%) 0 var(--clip-left, 0%) round var(--r1, 0) var(--r2, 40vmax) var(--r3, 40vmax) var(--r4, 0));
     animation-name: wave-wipe;
   }
+
   @keyframes wave-wipe {
     to {
       clip-path: inset(0 0 0 0 round 0 0 0 0);
     }
+  }
+}
+
+/* Map safe-area variables to platform insets when supported */
+@supports (padding: env(safe-area-inset-top)) {
+  :root {
+    --safe-top: env(safe-area-inset-top);
+    --safe-bottom: env(safe-area-inset-bottom);
   }
 }
 
@@ -81,18 +130,29 @@ body {
     transition: none;
   }
 }
+
 a {
   color: var(--color-fg);
   text-decoration: none;
 }
+
 a:hover {
   color: var(--accent-strong);
 }
+
 img {
   max-width: 100%;
   display: block;
 }
 
 /* Smooth reveal utility */
-[data-reveal] { opacity: 0; transform: translateY(14px); transition: opacity .48s ease, transform .48s ease; }
-.reveal-in { opacity: 1 !important; transform: translateY(0) !important; }
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .48s ease, transform .48s ease;
+}
+
+.reveal-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}

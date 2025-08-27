@@ -1,13 +1,17 @@
 .btn {
+  appearance: none;
+  display: none; /* hidden by default; only show on desktop pointers */
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 6px 8px;
+  border-radius: 999px; /* pill shape to match ThemeToggle */
+  color: var(--color-fg);
   border: 1px solid var(--border);
   background:
     linear-gradient(180deg, color-mix(in oklab, var(--elev) 92%, transparent), color-mix(in oklab, var(--elev) 96%, transparent));
-  color: var(--color-fg);
-  border-radius: 999px;
-  padding: 8px 10px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  box-shadow: var(--shadow-ambient);
   position: relative;
   will-change: transform, background-color, border-color, color, box-shadow;
   transition: transform 220ms ease,
@@ -15,9 +19,12 @@
     border-color var(--theme-transition) ease-in-out,
     color var(--theme-transition) ease-in-out,
     box-shadow 220ms ease;
-  box-shadow: var(--shadow-ambient);
-  cursor: pointer;
 }
+
+@media (hover: hover) and (pointer: fine) {
+  .btn { display: inline-flex; }
+}
+
 .btn:hover {
   border-color: color-mix(in oklab, var(--accent) 28%, var(--border));
   background:
@@ -30,11 +37,45 @@
   outline-offset: 2px;
   box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 24%, transparent), var(--shadow-2);
 }
-.btn:active {
-  transform: rotate(-4deg) scale(0.985);
+.btn:active { transform: rotate(-4deg) scale(0.985); }
+
+.icon { display: block; color: currentColor; }
+
+/* Hidden state mark: diagonal cross over the icon */
+.wrap { position: relative; display: inline-block; line-height: 0; }
+.cross {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: block;
+}
+.cross::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  transform: translate(-50%, -50%) rotate(45deg);
+  border-radius: 2px;
 }
 
-/* Tooltip using data-tip */
+/* Small status dot: accent when custom, muted when system */
+.dot {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--color-fg) 40%, transparent);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-ambient);
+}
+.dotAccent { background: var(--accent); border-color: color-mix(in oklab, var(--accent) 60%, var(--border)); }
+
+/* Tooltip using data-tip (same pattern as ThemeToggle) */
 .btn::after {
   content: attr(data-tip);
   position: absolute;

@@ -9,6 +9,15 @@ function BeforeAfter({ before, after, altBefore, altAfter }) {
     const noHover = window.matchMedia('(hover: none)').matches
     return coarse || noHover
   }, [])
+  const [showHint, setShowHint] = useState(false)
+
+  useEffect(() => {
+    if (isMobile) {
+      setShowHint(true)
+      const t = setTimeout(() => setShowHint(false), 2200)
+      return () => clearTimeout(t)
+    }
+  }, [isMobile])
 
   const toggle = () => setShowAfter((s) => !s)
   const keyToggle = (e) => {
@@ -30,6 +39,11 @@ function BeforeAfter({ before, after, altBefore, altAfter }) {
     >
       <img className={styles.before} src={before} alt={altBefore} loading="lazy" />
       <img className={styles.after} src={after} alt={altAfter} loading="lazy" />
+      {isMobile && (
+        <div className={`${styles.hint} ${showHint ? '' : styles.hintHide}`} aria-hidden="true">
+          Tap to toggle
+        </div>
+      )}
       <button
         type="button"
         className={styles.toggle}

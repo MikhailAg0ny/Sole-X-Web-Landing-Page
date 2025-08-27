@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { ContactShadows, Environment, OrbitControls, useGLTF } from '@react-three/drei'
 import { MeshoptDecoder } from 'three-stdlib'
 import * as THREE from 'three'
@@ -73,27 +73,39 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
   // Preload the model for faster mount
   useEffect(() => { try { useGLTF.preload(modelUrl) } catch {} }, [modelUrl])
 
-  // Handle resize and visibility changes to maintain positioning
-  useEffect(() => {
-    const handleResize = () => {
-      // Force a re-render of the canvas to fix positioning issues
-      window.dispatchEvent(new Event('resize'))
-    }
-    const handleVisibilityChange = () => {
-      if (!document.hidden) setTimeout(handleResize, 100)
-    }
-    window.addEventListener('resize', handleResize)
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-    }
-  }, [])
+  // In-canvas visibility refresh: reset size/DPR, update camera, and re-render a few frames
+  function VisibilityRefresh({ dpr }) {
+    const { gl, size, setSize, invalidate, camera } = useThree()
+    useEffect(() => {
+      const refresh = () => {
+        if (document.hidden) return
+        try {
+          // Re-apply size and DPR
+          setSize(size.width, size.height)
+          const maxDpr = Array.isArray(dpr) ? dpr[1] : dpr
+          if (maxDpr) gl.setPixelRatio(maxDpr)
+          camera.updateProjectionMatrix()
+          // Kick a few frames to ensure materials/shadows settle
+          let n = 3
+          const tick = () => { invalidate(); if (--n > 0) requestAnimationFrame(tick) }
+          tick()
+        } catch {}
+      }
+      document.addEventListener('visibilitychange', refresh)
+      window.addEventListener('focus', refresh)
+      return () => {
+        document.removeEventListener('visibilitychange', refresh)
+        window.removeEventListener('focus', refresh)
+      }
+    }, [gl, size, setSize, invalidate, camera, dpr])
+    return null
+  }
 
-  const mqSmall = typeof window !== 'undefined' ? window.matchMedia('(max-width: 600px)').matches : false
-  const mqShort = typeof window !== 'undefined' ? window.matchMedia('(max-height: 620px)').matches : false
-  const fov = mqSmall ? (mqShort ? 60 : 55) : 45
-  const dpr = mqSmall ? [1, mqShort ? 1.25 : 1.5] : [1, 2]
+  const mqSmall = typeof window !== 'undefined' ? window.matchMedia('(max-width: 640px)').matches : false
+  const mqShort = typeof window !== 'undefined' ? window.matchMedia('(max-height: 640px)').matches : false
+  const mqTiny = typeof window !== 'undefined' ? window.matchMedia('(max-height: 520px)').matches : false
+  const fov = mqSmall ? (mqTiny ? 64 : mqShort ? 60 : 54) : 45
+  const dpr = mqSmall ? [1, mqTiny ? 1.2 : mqShort ? 1.35 : 1.5] : [1, 2]
 
   const modelGroupRef = useRef()
 
@@ -103,13 +115,15 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
         shadows 
         gl={{ antialias: true, alpha: true }} 
         dpr={dpr}
-        camera={{ position: mqShort ? [0, 2.2, 5.6] : [0, 2, 5], fov }}
+        camera={{ position: mqTiny ? [0, 2.5, 6.2] : mqShort ? [0, 2.3, 5.8] : [0, 2, 5], fov }}
         onCreated={({ gl, camera }) => {
           // Ensure proper camera setup
           gl.setClearColor(0x000000, 0)
-          camera.position.set(mqShort ? 0 : 0, mqShort ? 2.2 : 2, mqShort ? 5.6 : 5)
+          const pos = mqTiny ? [0, 2.5, 6.2] : mqShort ? [0, 2.3, 5.8] : [0, 2, 5]
+          camera.position.set(pos[0], pos[1], pos[2])
         }}
       >
+        <VisibilityRefresh dpr={dpr} />
         <Suspense fallback={<Loader />}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[3, 6, 5]} intensity={1} castShadow shadow-mapSize-width={1024} shadow-mapSize-height={1024} />
@@ -132,7 +146,7 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
             enablePan={false}
             minPolarAngle={Math.PI / 2.5}
             maxPolarAngle={Math.PI / 2}
-            target={[0, Math.max(0.4, Math.min(0.8, targetY)), 0]}
+            target={[0, Math.max(0.45, Math.min(0.85, targetY)), 0]}
             enableDamping={true}
             dampingFactor={0.05}
             rotateSpeed={0.5}
