@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@layer base {
+	/* Smooth typography defaults across the app */
+	h1 { @apply text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight; }
+	h2 { @apply text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight; }
+	h3 { @apply text-xl sm:text-2xl font-bold leading-snug; }
+	p  { @apply text-base leading-relaxed; }
+
+	/* Give main sections consistent side padding on small screens */
+	main > section { @apply container mx-auto px-4 sm:px-6; }
+}
+
+@layer components {
+	/* Utility to add vertical rhythm to page sections when needed */
+	.page-vspace { @apply py-6 sm:py-8 md:py-10; }
+	.page-gap    { @apply space-y-8 sm:space-y-10 md:space-y-12; }
+}

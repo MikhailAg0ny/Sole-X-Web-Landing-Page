@@ -100,8 +100,8 @@ export default function Services() {
   }, [])
 
   return (
-    <section className={styles.services}>
-      <div className={styles.container}>
+    <section className={`${styles.services} page-vspace`}>
+      <div className={`${styles.container} container mx-auto px-4 sm:px-6`}>
         <header className={styles.header} data-reveal>
           <h1 className={styles.title}>Our Services</h1>
           <p className={styles.kicker}>PROFESSIONAL SNEAKER CARE</p>
@@ -110,7 +110,7 @@ export default function Services() {
           </p>
         </header>
 
-        <div className={styles.list}>
+        <div className={`${styles.list} grid grid-cols-1 gap-6 sm:gap-8`}>
           {items.map((s, i) => (
             <article key={s.key} className={styles.item} data-reveal style={{ transitionDelay: `${i * 60}ms` }}>
               <BeforeAfter
@@ -137,6 +137,6 @@ export default function Services() {
 
   {/* CTA removed per request */}
       </div>
-    </section>
+  </section>
   )
 }

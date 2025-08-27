@@ -43,7 +43,7 @@ export default function MainLayout() {
   return (
     <div className={styles.wrapper}>
       <Navbar />
-      <main className={styles.main}>
+         <main className={`${styles.main} container max-w-screen-xl mx-auto px-4 sm:px-6`}>
         <Outlet />
       </main>
       <Footer peek={footerPeek} />
