@@ -12,6 +12,7 @@ if (typeof document !== 'undefined') {
   // Ensure a default cursor mode attribute early (default to 'custom')
   try {
     const savedMode = localStorage.getItem('cursorMode')
+    if (!savedMode) localStorage.setItem('cursorMode', 'custom')
     root.setAttribute('data-cursor', savedMode === 'system' ? 'system' : 'custom')
   } catch {
     root.setAttribute('data-cursor', 'custom')
