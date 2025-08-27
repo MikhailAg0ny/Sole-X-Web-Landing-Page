@@ -9,16 +9,13 @@ export default function MainLayout() {
   const location = useLocation()
 
   useEffect(() => {
-    let lastY = window.scrollY || 0
     const recalc = () => {
       const y = window.scrollY || 0
-      const dirDown = y > lastY
-      lastY = y
       const docH = document.documentElement.scrollHeight
       const winH = window.innerHeight
       const noScroll = docH <= winH
-      const nearBottom = y + winH >= docH - 220 // threshold
-      setFooterPeek(noScroll || (nearBottom && dirDown))
+      const atEnd = y + winH >= docH - 8 // tight threshold ~ end of scroll
+      setFooterPeek(noScroll || atEnd)
     }
     window.addEventListener('scroll', recalc, { passive: true })
     window.addEventListener('resize', recalc)
@@ -37,8 +34,8 @@ export default function MainLayout() {
       const docH = document.documentElement.scrollHeight
       const winH = window.innerHeight
       const noScroll = docH <= winH
-      const nearBottom = y + winH >= docH - 220
-      setFooterPeek(noScroll || nearBottom)
+      const atEnd = y + winH >= docH - 8
+      setFooterPeek(noScroll || atEnd)
     }
     // Wait for new route content to render and layout
     requestAnimationFrame(() => requestAnimationFrame(recalcAfterPaint))

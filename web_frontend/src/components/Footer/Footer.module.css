@@ -1,19 +1,88 @@
+/* Base footer */
 .footer {
   border-top: 1px solid var(--border);
+  width: 100%;
+  background: var(--surface, transparent);
+  color: var(--text);
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--color-bg);
   transform: translateY(100%);
-  transition: transform 260ms ease;
-  will-change: transform;
-  z-index: 50;
+  transition: transform 280ms ease,
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease;
+  z-index: 40;
 }
+
+/* Reveal state when user nears end of scroll */
 .peek { transform: translateY(0); }
-.inner {
-  width: min(1200px, 100%);
-  margin-inline: auto;
-  padding: 24px;
-  color: var(--muted);
+
+@media (prefers-reduced-motion: reduce) {
+  .footer { transition: none; }
 }
+
+/* Layout */
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px calc(16px + var(--safe-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.signature { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; line-height: 1.6; }
+.by { opacity: .85; color: var(--footer-fg, var(--text)); transition: color 200ms ease, opacity 200ms ease; }
+.devIcon { opacity: .9; color: var(--footer-fg, var(--text)); transition: color 200ms ease, opacity 200ms ease; }
+
+/* Name, single-element effect */
+.nameWrap { position: relative; display: inline-block; padding: 0 2px; line-height: 1; }
+.nameBase {
+  position: relative;
+  display: inline-block;
+  font-weight: 700;
+  letter-spacing: .2px;
+  color: var(--footer-fg, var(--text));
+}
+
+/* Use a pseudo-element for the rainbow clipped to the text. No duplicate nodes. */
+.nameBase::after {
+  content: attr(data-name);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  /* Brighter, smoother rainbow tied to mouse position (logic unchanged) */
+  background-image: radial-gradient(
+    130px 84px at var(--mx, 50%) var(--my, 50%),
+    /* red → orange → yellow → green → teal → blue → indigo → violet → fade */
+    #ff375f 0%,
+    #ff9f0a 14%,
+    #ffd60a 26%,
+    #34c759 38%,
+    #00c7be 50%,
+    #0a84ff 62%,
+    #5856d6 74%,
+    #bf5af2 86%,
+    rgba(191, 90, 242, 0) 100%
+  );
+  filter: saturate(1.15) contrast(1.05);
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+.nameWrap:hover .nameBase::after { opacity: 1; }
+
+@media (max-width: 480px) {
+  .inner { padding: 14px 16px calc(16px + var(--safe-bottom, 0px)); }
+  .signature { gap: 6px; }
+}
+
+/* Ensure paragraphs and links render with footer fg color and don't overflow */
+.inner p { margin: 0; color: var(--footer-fg, var(--text)); }
+.inner a { color: var(--footer-fg, var(--text)); text-decoration-color: color-mix(in oklab, var(--footer-fg, var(--text)) 40%, transparent); }
+.inner a:hover { text-decoration-color: var(--accent); }
