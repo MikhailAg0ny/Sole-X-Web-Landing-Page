@@ -19,15 +19,17 @@ export default function Hero() {
           </div>
         </div>
         <div className={styles.colModel}>
-          <ModelCanvas
-            key={`${location.pathname}-hero-model`}
-            modelUrl="/models/air_jordan_1_retro_high_bred_toe.glb"
-            rotation={[0, Math.PI * 5, 0]}
-            rearView={true}
-            scale={1.1}
-            offset={[0.02, 0, -0.18]}
-            targetY={0.55}
-          />
+          <div className={styles.modelPanel} aria-hidden>
+            <ModelCanvas
+              key={`${location.pathname}-hero-model`}
+              modelUrl="/models/air_jordan_1_retro_high_bred_toe.glb"
+              rotation={[0, Math.PI * 5, 0]}
+              rearView={true}
+              scale={0.94}
+              offset={[0.02, 0, -0.18]}
+              targetY={0.55}
+            />
+          </div>
         </div>
       </div>
     </section>

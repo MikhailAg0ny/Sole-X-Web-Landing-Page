@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import styles from './Navbar.module.css'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
 import CursorToggle from '../CursorToggle/CursorToggle'
+import SoleXLogo from '../SoleXLogo'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
@@ -73,11 +74,8 @@ export default function Navbar() {
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.inner}>
-        <Link to="/" className={styles.brand}>
-          <div className={styles.logoWrapper}>
-            <img src="/solex-logo.png" alt="Sole-X" height="28" />
-          </div>
-          <span className={styles.brandText}>Sole X</span>
+        <Link to="/" className={styles.brand} aria-label="Sole X">
+          <SoleXLogo variant="compact" />
         </Link>
         
         <button 

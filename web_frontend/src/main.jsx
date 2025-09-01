@@ -1,10 +1,18 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import './styles/tailwind.css'
 import './styles/globals.css'
 import App from './App.jsx'
 import { ThemeProvider } from './context/ThemeContext'
 import cursorPng from './assets/nike_air_jordan_1_cursor.png'
+
+// Dev-only: ensure no service worker from any previous project hijacks localhost
+if (import.meta.env.DEV && 'serviceWorker' in navigator) {
+  try {
+    navigator.serviceWorker.getRegistrations?.().then((regs) => regs.forEach((r) => r.unregister().catch(() => {})))
+  } catch {}
+}
 
 // Set up a scaled cursor so it matches normal cursor size without editing the source PNG
 if (typeof document !== 'undefined') {

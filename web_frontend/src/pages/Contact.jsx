@@ -27,7 +27,7 @@ export default function Contact() {
   }, [])
 
   return (
-    <section className={styles.container}>
+    <section className={`${styles.container} container mx-auto px-4 sm:px-6 page-vspace`}>
       <header className={styles.header} data-reveal>
         <h1>Contact Us</h1>
         <p className={styles.sub}>
@@ -99,7 +99,7 @@ export default function Contact() {
 
         <div className={styles.card} data-reveal>
           <h2>Send us a message</h2>
-          <p className={styles.sub} style={{ marginBottom: 12 }}>
+          <p className={`${styles.sub} mb-3`}>
             Prefer socials? Reach us directly on TikTok or Facebook — quick replies.
           </p>
           <div className={styles.socialRow}>

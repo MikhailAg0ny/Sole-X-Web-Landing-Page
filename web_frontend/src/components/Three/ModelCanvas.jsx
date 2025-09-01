@@ -9,7 +9,7 @@ import Loader from './Loader'
 // Ensure Meshopt-compressed models decode correctly
 try { useGLTF.setMeshoptDecoder(MeshoptDecoder) } catch {}
 
-function ShoeModel({ url, rotation = [0, Math.PI, 0], scale = 1, spin = true, spinSpeed = 0.3 }) {
+function ShoeModel({ url, rotation = [0, Math.PI, 0], scale = 1, spin = true, spinSpeed = 0.3, onReady }) {
   const { scene } = useGLTF(url)
   const model = useMemo(() => scene.clone(true), [scene])
   const outerRef = useRef() // spins around Y
@@ -108,9 +108,35 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
   const dpr = mqSmall ? [1, mqTiny ? 1.2 : mqShort ? 1.35 : 1.5] : [1, 2]
 
   const modelGroupRef = useRef()
+  const controlsRef = useRef()
+  const [fitTarget, setFitTarget] = useState(null)
+  const [dragging, setDragging] = useState(false)
+  // Desktop-only tilt parallax
+  const [tilt, setTilt] = useState({ x: 0, y: 0 })
+  const rafRef = useRef()
 
   return (
-    <div className={styles.wrapper}>
+    <div
+      className={styles.wrapper}
+      onMouseMove={(e) => {
+        // Parallax tilt (pointer: fine)
+        if (!window.matchMedia || !window.matchMedia('(pointer: fine)').matches) return
+        const r = e.currentTarget.getBoundingClientRect()
+        const cx = r.left + r.width / 2
+        const cy = r.top + r.height / 2
+        const dx = (e.clientX - cx) / (r.width / 2)
+        const dy = (e.clientY - cy) / (r.height / 2)
+        const max = 6 // degrees
+        const next = { x: -dy * max, y: dx * max }
+        cancelAnimationFrame(rafRef.current)
+        rafRef.current = requestAnimationFrame(() => setTilt(next))
+      }}
+      onMouseLeave={() => {
+        cancelAnimationFrame(rafRef.current)
+        setTilt({ x: 0, y: 0 })
+      }}
+      style={{ transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateZ(0)` }}
+    >
   <Canvas 
         shadows 
         gl={{ antialias: true, alpha: true }} 
@@ -137,11 +163,19 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
             shadow-mapSize-height={1024}
           />
           <group ref={modelGroupRef} position={offset}>
-            <ShoeModel url={modelUrl} rotation={rotation ?? (rearView ? [0, Math.PI, 0] : [0, 0, 0])} scale={scale} spin={spin} spinSpeed={spinSpeed} />
+            <ShoeModel
+              url={modelUrl}
+              rotation={rotation ?? (rearView ? [0, Math.PI, 0] : [0, 0, 0])}
+              scale={scale}
+              spin={spin && !dragging}
+              spinSpeed={spinSpeed}
+              onReady={(obj) => setFitTarget(obj)}
+            />
           </group>
           <ContactShadows position={[0, (offset?.[1] || 0) - 0.001, 0]} opacity={0.35} blur={2.8} scale={10} far={8} />
           <Environment preset="city" />
           <OrbitControls
+            ref={controlsRef}
             enableZoom={false}
             enablePan={false}
             minPolarAngle={Math.PI / 2.5}
@@ -150,7 +184,17 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
             enableDamping={true}
             dampingFactor={0.05}
             rotateSpeed={0.5}
+            onStart={() => setDragging(true)}
+            onEnd={() => setDragging(false)}
           />
+          {fitTarget ? (
+            <FitCamera
+              target={fitTarget}
+              controls={controlsRef.current}
+              margin={mqSmall ? 1.25 : 1.15}
+              targetYPreferred={targetY}
+            />
+          ) : null}
         </Suspense>
       </Canvas>
     </div>
@@ -183,4 +227,50 @@ function Model({ url, scale, rotation, offset }) {
       <mesh ref={innerRef} geometry={nodes.Cube.geometry} material={nodes.Cube.material} />
     </group>
   )
+}
+
+// Utility to fit the camera to the target object's bounds (height and width) with margin
+function FitCamera({ target, controls, margin = 1.15, targetYPreferred = 0.75 }) {
+  const { camera, size, invalidate } = useThree()
+  const frames = useRef(0)
+
+  useFrame(() => {
+    if (!target || frames.current > 24) return
+    const box = new THREE.Box3().setFromObject(target)
+    applyFit(box)
+    frames.current += 1
+  })
+
+  useEffect(() => {
+    if (!target) return
+    const box = new THREE.Box3().setFromObject(target)
+    applyFit(box)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target, size.width, size.height, margin, controls, targetYPreferred])
+
+  function applyFit(box) {
+    const center = new THREE.Vector3(); box.getCenter(center)
+    const sizeV = new THREE.Vector3(); box.getSize(sizeV)
+    const vert = sizeV.y * margin
+    const horiz = sizeV.x * margin
+    const fovRad = (camera.fov * Math.PI) / 180
+    const aspect = size.width / Math.max(1, size.height)
+    const vDist = (vert / 2) / Math.tan(fovRad / 2)
+    const hFov = 2 * Math.atan(Math.tan(fovRad / 2) * aspect)
+    const hDist = (horiz / 2) / Math.tan(hFov / 2)
+    const dist = Math.max(vDist, hDist)
+    camera.position.x = center.x
+    camera.position.z = center.z + dist
+    const tY = Math.max(0.45, Math.min(0.85, targetYPreferred))
+    if (controls?.target) {
+      controls.target.set(center.x, tY, center.z)
+      controls.update()
+    } else {
+      camera.lookAt(center.x, tY, center.z)
+    }
+    camera.updateProjectionMatrix()
+    invalidate()
+  }
+
+  return null
 }

@@ -1,16 +1,19 @@
 .wrapper {
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 12; /* a bit wider for small screens to avoid cropping */
-  min-height: clamp(240px, 38vw, 520px);
-  max-height: min(66dvh, 720px);
-  background: var(--elev);
-  border: 1px solid var(--border);
-  border-radius: 16px;
+  aspect-ratio: 16 / 11; /* slightly taller reduces right-side clipping on short screens */
+  min-height: clamp(260px, 42vw, 560px);
+  max-height: min(70dvh, 740px);
+  background: linear-gradient(180deg,
+    color-mix(in oklab, var(--color-bg) 96%, transparent),
+    color-mix(in oklab, var(--color-bg) 100%, transparent)
+  );
+  border: 1px solid color-mix(in oklab, var(--border) 85%, transparent);
+  border-radius: 18px;
   overflow: hidden;
   position: relative;
   isolation: isolate; /* prevents stacking overlap */
-  box-shadow: var(--shadow-1);
+  box-shadow: 0 12px 40px -18px color-mix(in oklab, #000 40%, transparent), var(--shadow-1);
   /* Ensure stable positioning */
   transform: translateZ(0);
   backface-visibility: hidden;
@@ -23,22 +26,24 @@
   position: absolute;
   inset: -1px; /* bleed under the border */
   border-radius: inherit;
-  background: radial-gradient(
-      120% 90% at 20% 10%,
-      color-mix(in oklab, var(--accent) 12%, transparent),
-      transparent 65%
-    ),
-    radial-gradient(
-      120% 90% at 80% 90%,
-      color-mix(in oklab, var(--accent) 16%, transparent),
-      transparent 65%
-    ),
-    linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--color-bg) 90%, transparent),
-      color-mix(in oklab, var(--color-bg) 96%, transparent)
-    );
+  background:
+    radial-gradient(120% 90% at 20% 10%, color-mix(in oklab, var(--accent) 10%, transparent), transparent 65%),
+    radial-gradient(120% 90% at 80% 90%, color-mix(in oklab, var(--accent) 14%, transparent), transparent 65%),
+    linear-gradient(180deg, color-mix(in oklab, var(--color-bg) 92%, transparent), color-mix(in oklab, var(--color-bg) 99%, transparent));
   z-index: 0;
+}
+
+/* faint inner glow ring */
+.wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(120% 100% at 50% 0%, color-mix(in oklab, var(--accent) 8%, transparent), transparent 60%);
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+  z-index: 2;
 }
 
 /* Ensure the R3F <canvas> fills its container */
@@ -61,7 +66,7 @@
 
 @media (min-width: 900px) {
   .wrapper {
-  max-width: clamp(520px, 44vw, 680px);
+    max-width: clamp(560px, 52vw, 820px);
     margin-inline: auto; /* keep centered within the right column */
   }
 }
@@ -71,6 +76,10 @@
   .wrapper {
     transition: border-color var(--theme-transition) ease-in-out,
       background-color var(--theme-transition) ease-in-out,
-      box-shadow var(--theme-transition) ease-in-out;
+      box-shadow var(--theme-transition) ease-in-out,
+      transform 220ms ease;
+  }
+  .wrapper:hover {
+    box-shadow: 0 18px 56px -24px color-mix(in oklab, #000 52%, transparent), var(--shadow-2);
   }
 }
