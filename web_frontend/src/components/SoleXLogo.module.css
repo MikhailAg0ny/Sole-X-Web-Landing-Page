@@ -2,36 +2,52 @@
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
   color: var(--color-fg);
+  /* keep the whole mark from jumping when font sizes clamp */
+  gap: clamp(10px, 1vw, 16px); /* space between SOLE and the box */
 }
 
-.word {
+.letters {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0; /* make it read as a single word */
+}
+
+.letter {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
     Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji",
     "Segoe UI Emoji";
   font-weight: 900;
-  letter-spacing: 0.12em; /* stronger tracking like the reference */
-  font-size: clamp(56px, 9vw, 132px);
-  line-height: 1;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  line-height: 1;
+  /* Size each line like the reference (big and bold) */
+  font-size: clamp(42px, 7.5vw, 92px);
 }
 
 .icon {
-  width: clamp(84px, 8.5vw, 160px);
-  aspect-ratio: 1 / 1; /* perfect square */
-  border: 6px solid var(--color-fg);
+  width: clamp(96px, 9.2vw, 180px); /* reduce square size */
+  aspect-ratio: 1 / 1;
+  border: clamp(5px, 0.7vw, 8px) solid var(--color-fg); /* slightly thinner stroke */
   display: grid;
   place-items: center;
-  padding: 0; /* no inner gap */
+  padding: 0;
 }
 
 .x {
   font-weight: 900;
-  font-size: clamp(64px, 8.4vw, 132px); /* fill more of the box */
-  line-height: 1; /* avoid extra top/bottom space */
-  display: block; /* remove inline baseline drift */
-  transform: translateY(-1%); /* subtle upward nudge for optical centering */
+  /* Leave comfortable padding around the X inside the square */
+  font-size: clamp(44px, 5.6vw, 112px);
+  line-height: 1;
+  display: block;
+  transform: translateY(-1%);
 }
 
 /* Uses CSS variables for theme; no OS-based overrides needed */
+
+/* Compact variant for tight areas like the navbar */
+.compact {
+  transform: scale(0.32);
+  transform-origin: left center;
+}

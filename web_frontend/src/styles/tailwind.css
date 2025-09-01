@@ -1,18 +1,34 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/aspect-ratio";
+@plugin "@tailwindcss/container-queries";
 
 @layer base {
-	/* Smooth typography defaults across the app */
-	h1 { @apply text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight; }
-	h2 { @apply text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight; }
-	h3 { @apply text-xl sm:text-2xl font-bold leading-snug; }
-	p  { @apply text-base leading-relaxed; }
-
 	/* Give main sections consistent side padding on small screens */
-	main > section { @apply container mx-auto px-4 sm:px-6; }
+	main > section { width: min(1280px, 100%); margin-inline: auto; padding-inline: clamp(1rem, 2.4vw, 1.5rem); }
 }
 
 @layer components {
 	/* Utility to add vertical rhythm to page sections when needed */
-	.page-vspace { @apply py-6 sm:py-8 md:py-10; }
-	.page-gap    { @apply space-y-8 sm:space-y-10 md:space-y-12; }
+	.page-vspace { padding-block: clamp(1.5rem, 3.2vw, 2.5rem); }
+	.page-gap    > * + * { margin-top: clamp(2rem, 3.8vw, 3rem); }
+
+	/* Rich text styling for content blocks (plugin-free fallback) */
+	.prose-content { max-width: none; }
+
+	/* Make embedded media responsive (fallback without plugin) */
+	.aspect-video { aspect-ratio: 16 / 9; border-radius: 0.5rem; overflow: hidden; }
+
+	/* Form base styles (fallback) */
+	.form-field { display:block; width:100%; border-radius:0.5rem; border:1px solid rgba(148,163,184,.4); background:rgba(255,255,255,.9); color:#0f172a; padding:.6rem .8rem; box-shadow: 0 1px 2px rgba(0,0,0,.06); }
+	.form-field:focus { outline: none; border-color:#94a3b8; box-shadow: 0 0 0 2px rgba(148,163,184,.35); }
+	.form-label { display:block; font-size:.9rem; font-weight:600; color:#e5e7eb; margin-bottom:.25rem; }
+	.form-row   { display:grid; grid-template-columns: 1fr; gap:1rem; }
+	@media (min-width:640px){ .form-row { grid-template-columns: 1fr 1fr; } }
+
+	/* Container query helpers (example) */
+	@container card (min-width: 520px) {
+		.card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	}
 }

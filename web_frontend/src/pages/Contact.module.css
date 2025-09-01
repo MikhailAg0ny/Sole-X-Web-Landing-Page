@@ -6,10 +6,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  /* Inherit the global custom cursor and theme colors */
-  cursor: inherit;
-  color: var(--color-fg);
-  background: var(--color-bg);
+  cursor: url(assets/nike_air_jordan_1_cursor), auto;
 }
 
 .container {
@@ -270,8 +267,8 @@ textarea:focus {
   justify-content: flex-end;
 }
 button {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
-  color: var(--color-bg);
+  background: #111;
+  color: #fff;
   border: 0;
   padding: 10px 14px;
   border-radius: 10px;
@@ -279,12 +276,12 @@ button {
   letter-spacing: 0.3px;
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease,
-    background-color 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 8px 20px color-mix(in oklab, var(--accent) 22%, transparent);
+    background-color 0.2s ease;
 }
 button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 24px color-mix(in oklab, var(--accent) 28%, transparent);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  background: #000;
 }
 .helpText {
   margin-top: 10px;

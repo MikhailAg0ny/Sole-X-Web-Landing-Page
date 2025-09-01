@@ -1,3 +1,8 @@
+import typography from '@tailwindcss/typography'
+import forms from '@tailwindcss/forms'
+import aspectRatio from '@tailwindcss/aspect-ratio'
+import containerQueries from '@tailwindcss/container-queries'
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -16,5 +21,5 @@ export default {
       container: { center: true, padding: '1rem' }
     }
   },
-  plugins: []
+  plugins: [typography, forms, aspectRatio, containerQueries]
 }
