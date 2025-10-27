@@ -5,6 +5,7 @@
   color: var(--color-fg);
   /* keep the whole mark from jumping when font sizes clamp */
   gap: clamp(10px, 1vw, 16px); /* space between SOLE and the box */
+  min-width: 0;
 }
 
 .letters {
@@ -48,6 +49,28 @@
 
 /* Compact variant for tight areas like the navbar */
 .compact {
-  transform: scale(0.32);
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(6px, 1vw, 12px);
+  transform: none;
   transform-origin: left center;
+}
+
+.compact .letters {
+  align-items: center;
+  gap: clamp(2px, 0.6vw, 4px);
+}
+
+.compact .letter {
+  font-size: clamp(18px, 2.8vw, 28px);
+  letter-spacing: 0.08em;
+}
+
+.compact .icon {
+  width: clamp(32px, 4.5vw, 44px);
+  border-width: clamp(2px, 0.4vw, 3px);
+}
+
+.compact .x {
+  font-size: clamp(20px, 3vw, 30px);
 }
