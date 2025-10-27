@@ -19,7 +19,12 @@ export default function CursorToggle() {
   const applyAttr = (m) => {
     const root = document.documentElement
     if (!root) return
-    root.setAttribute('data-cursor', m)
+    // Set data-cursor-hidden="1" when system cursor is active
+    if (m === 'system') {
+      root.setAttribute('data-cursor-hidden', '1')
+    } else {
+      root.removeAttribute('data-cursor-hidden')
+    }
   }
 
   const toggle = () => {

@@ -125,7 +125,7 @@ img {
     cursor: var(--cursor-url) var(--cursor-hotspot-x, 0) var(--cursor-hotspot-y, 0), pointer;
   }
 
-  /* Hide cursor when toggled */
+  /* Use system cursor when toggled to system mode */
   html[data-cursor-hidden="1"] :is(
     body,
     a,
@@ -146,7 +146,7 @@ img {
     .burger,
     .close
   ) {
-    cursor: none !important;
+    cursor: pointer !important;
   }
 }
 

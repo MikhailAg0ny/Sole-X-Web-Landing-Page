@@ -21,9 +21,14 @@ if (typeof document !== 'undefined') {
   try {
     const savedMode = localStorage.getItem('cursorMode')
     if (!savedMode) localStorage.setItem('cursorMode', 'custom')
-    root.setAttribute('data-cursor', savedMode === 'system' ? 'system' : 'custom')
+    // Set data-cursor-hidden="1" when system cursor is active
+    if (savedMode === 'system') {
+      root.setAttribute('data-cursor-hidden', '1')
+    } else {
+      root.removeAttribute('data-cursor-hidden')
+    }
   } catch {
-    root.setAttribute('data-cursor', 'custom')
+    root.removeAttribute('data-cursor-hidden')
   }
   const TARGET_SIZE = 36 // typical cursor size in CSS pixels
   // Fractions within the drawn shoe where the pointer tip should be (x,y in [0..1])
