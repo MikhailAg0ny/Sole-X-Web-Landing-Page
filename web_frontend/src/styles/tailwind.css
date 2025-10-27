@@ -11,8 +11,8 @@
 
 @layer components {
 	/* Utility to add vertical rhythm to page sections when needed */
-	.page-vspace { padding-block: clamp(1.5rem, 3.2vw, 2.5rem); }
-	.page-gap    > * + * { margin-top: clamp(2rem, 3.8vw, 3rem); }
+	.page-vspace { padding-block: clamp(1.2rem, 2.8vw, 2.2rem); }
+	.page-gap    > * + * { margin-top: clamp(1.6rem, 3.4vw, 2.6rem); }
 
 	/* Rich text styling for content blocks (plugin-free fallback) */
 	.prose-content { max-width: none; }

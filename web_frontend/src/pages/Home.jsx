@@ -14,7 +14,7 @@ export default function Home() {
     return () => io.disconnect()
   }, [])
   return (
-  <section className="container max-w-screen-xl mx-auto px-4 sm:px-6 page-vspace page-gap" aria-label="Home">
+  <section className="container max-w-screen-xl mx-auto px-3 sm:px-4 page-vspace page-gap" aria-label="Home">
       <div data-reveal>
         <Hero />
       </div>
