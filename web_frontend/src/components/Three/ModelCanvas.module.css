@@ -2,14 +2,14 @@
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 11; /* slightly taller reduces right-side clipping on short screens */
-  min-height: clamp(260px, 42vw, 560px);
+  min-height: clamp(220px, 45vw, 560px);
   max-height: min(70dvh, 740px);
   background: linear-gradient(180deg,
     color-mix(in oklab, var(--color-bg) 96%, transparent),
     color-mix(in oklab, var(--color-bg) 100%, transparent)
   );
   border: 1px solid color-mix(in oklab, var(--border) 85%, transparent);
-  border-radius: 18px;
+  border-radius: clamp(14px, 3vw, 18px);
   overflow: hidden;
   position: relative;
   isolation: isolate; /* prevents stacking overlap */
@@ -18,6 +18,7 @@
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
+  touch-action: pan-y; /* Allow vertical scrolling but enable model rotation */
 }
 
 /* Soft hue background layer behind the canvas (subtle) */
@@ -68,6 +69,72 @@
   .wrapper {
     max-width: clamp(560px, 52vw, 820px);
     margin-inline: auto; /* keep centered within the right column */
+  }
+}
+
+/* Tablet and medium screens */
+@media (max-width: 900px) and (min-width: 641px) {
+  .wrapper {
+    min-height: clamp(240px, 48vw, 480px);
+    max-height: min(60dvh, 600px);
+    aspect-ratio: 16 / 10;
+  }
+}
+
+/* Small screens */
+@media (max-width: 640px) {
+  .wrapper {
+    min-height: clamp(200px, 52vw, 420px);
+    max-height: min(55dvh, 480px);
+    aspect-ratio: 4 / 3;
+    border-radius: 14px;
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+  .wrapper {
+    min-height: clamp(180px, 58vw, 380px);
+    max-height: min(50dvh, 420px);
+    aspect-ratio: 4 / 3;
+    border-radius: 12px;
+    border-width: 1px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 380px) {
+  .wrapper {
+    min-height: clamp(160px, 62vw, 340px);
+    max-height: min(48dvh, 380px);
+    aspect-ratio: 1 / 1;
+    border-radius: 10px;
+  }
+}
+
+/* Short screens - prioritize fitting on screen */
+@media (max-height: 700px) and (max-width: 900px) {
+  .wrapper {
+    min-height: clamp(180px, 42vw, 340px);
+    max-height: min(45dvh, 380px);
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (max-height: 620px) and (max-width: 900px) {
+  .wrapper {
+    min-height: clamp(160px, 38vw, 300px);
+    max-height: min(40dvh, 320px);
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* Extra short screens */
+@media (max-height: 520px) {
+  .wrapper {
+    min-height: clamp(140px, 35vw, 280px);
+    max-height: min(38dvh, 280px);
+    aspect-ratio: 16 / 8;
   }
 }
 

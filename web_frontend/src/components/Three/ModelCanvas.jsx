@@ -101,11 +101,22 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
     return null
   }
 
-  const mqSmall = typeof window !== 'undefined' ? window.matchMedia('(max-width: 640px)').matches : false
+  // Enhanced responsive media queries
+  const mqXSmall = typeof window !== 'undefined' ? window.matchMedia('(max-width: 380px)').matches : false
+  const mqSmall = typeof window !== 'undefined' ? window.matchMedia('(max-width: 480px)').matches : false
+  const mqMedium = typeof window !== 'undefined' ? window.matchMedia('(max-width: 640px)').matches : false
   const mqShort = typeof window !== 'undefined' ? window.matchMedia('(max-height: 640px)').matches : false
   const mqTiny = typeof window !== 'undefined' ? window.matchMedia('(max-height: 520px)').matches : false
-  const fov = mqSmall ? (mqTiny ? 64 : mqShort ? 60 : 54) : 45
-  const dpr = mqSmall ? [1, mqTiny ? 1.2 : mqShort ? 1.35 : 1.5] : [1, 2]
+  
+  // Optimized FOV for different screen sizes
+  const fov = mqXSmall ? (mqTiny ? 68 : mqShort ? 62 : 58) : 
+              mqSmall ? (mqTiny ? 64 : mqShort ? 60 : 56) : 
+              mqMedium ? (mqShort ? 54 : 50) : 45
+  
+  // Optimized DPR (Device Pixel Ratio) for performance
+  const dpr = mqXSmall ? [1, 1.2] : 
+              mqSmall ? [1, mqTiny ? 1.25 : 1.4] : 
+              mqMedium ? [1, 1.5] : [1, 2]
 
   const modelGroupRef = useRef()
   const controlsRef = useRef()
@@ -139,13 +150,26 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
     >
   <Canvas 
         shadows 
-        gl={{ antialias: true, alpha: true }} 
+        gl={{ 
+          antialias: true, 
+          alpha: true,
+          powerPreference: mqMedium ? 'default' : 'high-performance'
+        }} 
         dpr={dpr}
-        camera={{ position: mqTiny ? [0, 2.5, 6.2] : mqShort ? [0, 2.3, 5.8] : [0, 2, 5], fov }}
+        camera={{ 
+          position: mqXSmall ? [0, 2.8, 6.8] : 
+                    mqTiny ? [0, 2.5, 6.2] : 
+                    mqShort ? [0, 2.3, 5.8] : 
+                    mqMedium ? [0, 2.1, 5.4] : [0, 2, 5], 
+          fov 
+        }}
         onCreated={({ gl, camera }) => {
           // Ensure proper camera setup
           gl.setClearColor(0x000000, 0)
-          const pos = mqTiny ? [0, 2.5, 6.2] : mqShort ? [0, 2.3, 5.8] : [0, 2, 5]
+          const pos = mqXSmall ? [0, 2.8, 6.8] : 
+                      mqTiny ? [0, 2.5, 6.2] : 
+                      mqShort ? [0, 2.3, 5.8] : 
+                      mqMedium ? [0, 2.1, 5.4] : [0, 2, 5]
           camera.position.set(pos[0], pos[1], pos[2])
         }}
       >
@@ -182,8 +206,9 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
             maxPolarAngle={Math.PI / 2}
             target={[0, Math.max(0.45, Math.min(0.85, targetY)), 0]}
             enableDamping={true}
-            dampingFactor={0.05}
-            rotateSpeed={0.5}
+            dampingFactor={mqMedium ? 0.08 : 0.05}
+            rotateSpeed={mqMedium ? 0.7 : 0.5}
+            touchAction="none"
             onStart={() => setDragging(true)}
             onEnd={() => setDragging(false)}
           />
@@ -191,7 +216,7 @@ export default function ModelCanvas({ modelUrl = '/models/nike_air_zoom_pegasus_
             <FitCamera
               target={fitTarget}
               controls={controlsRef.current}
-              margin={mqSmall ? 1.25 : 1.15}
+              margin={mqXSmall ? 1.35 : mqSmall ? 1.3 : mqMedium ? 1.25 : 1.15}
               targetYPreferred={targetY}
             />
           ) : null}
