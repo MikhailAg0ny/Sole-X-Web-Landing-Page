@@ -10,7 +10,7 @@ export default function Hero() {
     <section className={styles.hero}>
       <div className={styles.grid}>
         <div className={styles.colText}>
-          <h1 className={styles.title}><SoleXLogo /></h1>
+          <h1 className={styles.title}><SoleXLogo variant="hero" className={styles.heroLogo} /></h1>
           <h2 className={styles.headline}>Bring Your Kicks Back to Life.</h2>
           <p className={styles.subtitle}>Quick refreshes, deep cleans, and sole whitening—tailored to your pair.</p>
           <div className={styles.actions}>

@@ -2,9 +2,15 @@ import styles from './SoleXLogo.module.css'
 
 export default function SoleXLogo({ className = '', variant = 'default' }) {
     const isCompact = variant === 'compact'
+    const isHero = variant === 'hero'
     return (
         <div
-            className={`${styles.logo} ${isCompact ? styles.compact : ''} ${className}`.trim()}
+            className={[
+                styles.logo,
+                isCompact ? styles.compact : '',
+                isHero ? styles.hero : '',
+                className,
+            ].filter(Boolean).join(' ')}
             role="img"
             aria-label="Sole X logo"
         >

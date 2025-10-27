@@ -1,7 +1,6 @@
 .hero {
-  padding: calc(28px + var(--safe-top)) 0 calc(28px + var(--safe-bottom)); /* tighter so content fits without scrolling */
-  min-height: calc(100vh - var(--header-h)); /* baseline */
-  height: calc(100vh - var(--header-h));
+  padding: clamp(22px, 6vh, 38px) 0 clamp(22px, 6vh, 38px);
+  min-height: clamp(560px, calc(100vh - var(--header-h)), 820px);
   background: linear-gradient(
     180deg,
     color-mix(in oklab, var(--color-bg) 90%, transparent),
@@ -12,15 +11,13 @@
 /* Prefer dynamic viewport to better match browser chrome/zoom behavior */
 @supports (height: 100dvh) {
   .hero {
-    min-height: calc(100dvh - var(--header-h));
-    height: calc(100dvh - var(--header-h));
+    min-height: clamp(560px, calc(100dvh - var(--header-h)), 820px);
   }
 }
 /* Fallback for mobile URL bars if dvh is not supported */
 @supports (height: 100svh) {
   .hero {
-    min-height: calc(100svh - var(--header-h));
-    height: calc(100svh - var(--header-h));
+    min-height: clamp(560px, calc(100svh - var(--header-h)), 820px);
   }
 }
 .grid {
@@ -29,28 +26,27 @@
   padding: 0 16px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 24px; /* tighter on mobile */
+  gap: clamp(18px, 3.2vw, 32px); /* dynamic spacing for varying widths */
   align-items: center; /* center vertically for stronger hero focus */
   overflow-x: clip; /* prevent tiny overflow due to rounding */
   min-height: inherit; /* make grid fill the hero height for vertical centering */
-  height: inherit;
 }
 .colText {
   text-align: center;
   display: grid;
   align-content: start;
-  gap: 20px; /* more spacing between hero elements */
+  gap: clamp(14px, 4vh, 20px);
   justify-items: center;
   margin-inline: auto;
 }
 .colModel {
-  min-height: clamp(440px, 48dvh, 680px); /* slightly smaller to fit with logo height */
+  min-height: clamp(260px, 38dvh, 600px); /* allow tighter fit on shorter screens */
 }
 .title {
   font-size: clamp(
-    4rem,
-    9.5vw + 1rem,
-    7.6rem
+    3rem,
+    5.4vw + 1rem,
+    5.8rem
   ); /* bigger for full-screen presence */
   margin: 0;
   font-weight: 900;
@@ -59,7 +55,7 @@
 }
 .headline {
   margin: 2px 0 0;
-  font-size: clamp(1.9rem, 5.4vw + 0.4rem, 3.2rem);
+  font-size: clamp(1.6rem, 4.8vw + 0.35rem, 2.8rem);
   font-weight: 900;
   letter-spacing: 0.1px;
   line-height: 1.12;
@@ -70,9 +66,9 @@
 }
 .subtitle {
   color: var(--muted);
-  margin: 12px 0 24px; /* spacing below headline */
-  font-size: clamp(1rem, 1.4vw + 0.7rem, 1.3rem);
-  max-width: 36ch; /* keep tagline tidy */
+  margin: 10px 0 18px;
+  font-size: clamp(0.92rem, 1vw + 0.7rem, 1.1rem);
+  max-width: 34ch; /* keep tagline tidy */
   margin-left: auto;
   margin-right: auto;
 }
@@ -85,7 +81,7 @@
 @media (max-width: 600px) {
   .grid { gap: 18px; }
   .title { font-size: clamp(2.8rem, 12vw + 0.6rem, 4.2rem); }
-  .colModel { min-height: clamp(260px, 42dvh, 500px); }
+  .colModel { min-height: clamp(200px, 36dvh, 420px); }
 }
 .ctaPrimary {
   background: var(--color-fg);
@@ -115,31 +111,27 @@
 
 @media (min-width: 900px) {
   .hero { 
-    min-height: calc(100vh - var(--header-h));
-    height: calc(100vh - var(--header-h));
-    padding: 36px 0 36px; 
+    min-height: clamp(580px, calc(100vh - var(--header-h)), 820px);
+    padding: clamp(26px, 5vh, 32px) 0; 
   } 
   .grid {
-  grid-template-columns: 1.4fr 3.6fr; 
-  gap: 40px;
-  align-items: center; 
+    grid-template-columns: 1.2fr 2.4fr; 
+    gap: clamp(28px, 4.6vw, 44px);
+    align-items: center; 
   }
   .colText {
     text-align: left;
-    gap: 20px;
-    max-width: 700px; 
+    gap: clamp(16px, 3vh, 22px);
+    max-width: 600px; 
     justify-self: start; 
     align-items: start;
   }
   .heroLogo {
-    transform: scale(0.9);
-    transform-origin: left top;
+    transform: none;
   }
   .colModel {
-  align-self: center;
-  }
-  .subtitle {
-    margin: 12px 0 22px;
+    align-self: center;
+    min-height: clamp(320px, 42dvh, 560px);
   }
   .actions {
     justify-content: flex-start; /* align CTAs with left edge on desktop */
@@ -155,25 +147,35 @@
 
 /* Short-screen optimizations for small phones in landscape or very short portrait */
 @media (max-height: 740px) and (max-width: 900px) {
-  .hero { padding: calc(56px + var(--safe-top)) 0 calc(48px + var(--safe-bottom)); }
-  .grid { gap: 16px; }
-  .title { font-size: clamp(2.4rem, 10.5vw + 0.4rem, 3.8rem); }
-  .headline { font-size: clamp(1.5rem, 4.6vw + 0.35rem, 2.6rem); }
-  .subtitle { font-size: clamp(.95rem, 1.1vw + .72rem, 1.1rem); margin: 8px 0 16px; }
-  .colModel { min-height: clamp(220px, 38dvh, 440px); }
-  .actions { gap: 14px; }
+  .hero { padding: calc(18px + var(--safe-top)) 0 calc(16px + var(--safe-bottom)); }
+  .grid { gap: 14px; }
+  .title { font-size: clamp(2.2rem, 8.4vw + 0.3rem, 3.2rem); }
+  .headline { font-size: clamp(1.35rem, 3.6vw + 0.3rem, 2.2rem); }
+  .subtitle { font-size: clamp(.9rem, 0.9vw + .64rem, 1rem); margin: 8px 0 12px; }
+  .colModel { min-height: clamp(190px, 32dvh, 320px); }
+  .actions { gap: 12px; }
   .ctaPrimary, .ctaSecondary { padding: 12px 18px; }
 }
 
 @media (max-height: 620px) and (max-width: 900px) {
-  .hero { padding: calc(44px + var(--safe-top)) 0 calc(36px + var(--safe-bottom)); }
-  .grid { gap: 14px; }
-  .title { font-size: clamp(2rem, 9.5vw, 3.2rem); }
-  .headline { font-size: clamp(1.25rem, 4vw + 0.25rem, 2.2rem); }
-  .subtitle { margin: 6px 0 12px; max-width: 34ch; }
-  .colModel { min-height: clamp(190px, 34dvh, 380px); }
-  .actions { gap: 12px; }
+  .hero { padding: calc(18px + var(--safe-top)) 0 calc(16px + var(--safe-bottom)); }
+  .grid { gap: 12px; }
+  .title { font-size: clamp(1.9rem, 8.5vw, 3rem); }
+  .headline { font-size: clamp(1.15rem, 3.6vw + 0.2rem, 2rem); }
+  .subtitle { margin: 6px 0 10px; max-width: 32ch; }
+  .colModel { min-height: clamp(170px, 30dvh, 300px); }
+  .actions { gap: 10px; }
   .ctaPrimary, .ctaSecondary { padding: 10px 16px; }
+}
+
+@media (max-height: 760px) and (min-width: 900px) {
+  .hero { padding: 20px 0 20px; }
+  .grid { gap: clamp(20px, 3.6vw, 32px); }
+  .title { font-size: clamp(2.7rem, 4vw + 0.6rem, 4.8rem); }
+  .headline { font-size: clamp(1.4rem, 2.5vw + 0.3rem, 2.2rem); }
+  .subtitle { max-width: 30ch; margin-bottom: 12px; }
+  .colModel { min-height: clamp(220px, 34dvh, 420px); }
+  .actions { gap: 12px; }
 }
 
 /* Panel behind the 3D model for a premium card look */
