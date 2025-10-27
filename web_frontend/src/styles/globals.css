@@ -101,7 +101,13 @@ img {
 
 /* Desktop-only: use custom .cur cursor; allow toggling hide/show */
 @media (hover: hover) and (pointer: fine) {
-  /* Use custom cursor only for pointer/interactive elements */
+  /* Base custom cursor application */
+  html:not([data-cursor-hidden="1"]),
+  html:not([data-cursor-hidden="1"]) body,
+  html:not([data-cursor-hidden="1"]) * {
+    cursor: var(--cursor-url) var(--cursor-hotspot-x, 0) var(--cursor-hotspot-y, 0), auto;
+  }
+
   /* Pointer style for interactive elements */
   html:not([data-cursor-hidden="1"]) :is(
     a,
@@ -126,6 +132,30 @@ img {
   }
 
   /* Use system cursor when toggled to system mode */
+  html[data-cursor-hidden="1"],
+  html[data-cursor-hidden="1"] body,
+  html[data-cursor-hidden="1"] *:not(
+    a,
+    button,
+    label,
+    summary,
+    select,
+    [role="button"],
+    [role="link"],
+    [data-cursor="link"],
+    [data-cursor="pointer"],
+    input[type="button"],
+    input[type="submit"],
+    input[type="checkbox"],
+    input[type="radio"],
+    .clickable,
+    .btn,
+    .burger,
+    .close
+  ) {
+    cursor: auto !important;
+  }
+
   html[data-cursor-hidden="1"] :is(
     body,
     a,
